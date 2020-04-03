@@ -1,5 +1,10 @@
 type CypherNodeCommand = string;
-export interface CypherNodeTransport {
+export interface RestfulTransport {
+  get: <T>(command: CypherNodeCommand, payload?: any) => Promise<T>;
+  post: <T>(command: CypherNodeCommand, payload: any) => Promise<T>;
+}
+
+export interface CypherNodeTransport extends RestfulTransport {
   get: <T>(command: CypherNodeCommand, payload?: any) => Promise<T>;
   post: <T>(command: CypherNodeCommand, payload: any) => Promise<T>;
 }
