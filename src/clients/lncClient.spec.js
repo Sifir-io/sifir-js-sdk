@@ -130,7 +130,7 @@ test("Should be able to create an invoice", function (t) { return __awaiter(void
     });
 }); });
 /** FAILS 403 */
-test.skip("Should be able to delete an invoice", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to delete an invoice", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, deleteInvoice, lightingInvoiceLabel, makeInvoicePayload, deletedInvoice;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -186,5 +186,29 @@ test("Should be able to get invoices and created invoice should be included", fu
                 }));
                 return [2 /*return*/];
         }
+    });
+}); });
+test("Should be able to get our nodes peers", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+    var listPeers, peers;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                listPeers = t.context.listPeers;
+                return [4 /*yield*/, listPeers()];
+            case 1:
+                peers = _a.sent();
+                // no peers yet
+                t.is(peers.length, 0);
+                return [2 /*return*/];
+        }
+    });
+}); });
+test("Should be able no route yet between node and an arbitrary node", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+    var getRoute;
+    return __generator(this, function (_a) {
+        getRoute = t.context.getRoute;
+        t.throwsAsync(getRoute("03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f", // ACINQ
+        100000, 20));
+        return [2 /*return*/];
     });
 }); });
