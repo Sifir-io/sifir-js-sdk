@@ -11,10 +11,11 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -244,6 +245,8 @@ exports.client = function (_a) {
                                 throw "Label is required to for a pub32 watch";
                             if (/[^0-9a-zA-Z_i ]/.test(options.label))
                                 throw "Labels must be alpha numeric or _";
+                            if (!options.nstart || isNaN(options.nstart))
+                                throw "nstart must be provided and must be a number";
                             return [4 /*yield*/, post("watchxpub", __assign({ pub32: xpub }, options))];
                         case 1:
                             result = _a.sent();
