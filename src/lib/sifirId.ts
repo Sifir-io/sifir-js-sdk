@@ -13,15 +13,16 @@ const sifirId = ({
   idServerUrl = "https://pairing.sifir.io"
 } = {}) => {
   const { getPubkeyArmored, signMessage, getKeyFingerprint } = pgpLib;
-  const registerUserKey = async ({ user }: RegisterUserKeyParam) => {
-    // Request user from id server
-    // get nonce
+  const getNonce = async () => {
     const {
       body: { serverArmoredPubkeyb64, nonce }
     } = await agent.get(`${idServerUrl}/auth/`);
-    const { token, key } = JSON.parse(
-      Buffer.from(nonce, "base64").toString("utf8")
-    );
+    return { nonce, serverArmoredPubkeyb64 };
+  };
+  const registerUserKey = async ({ user }: RegisterUserKeyParam) => {
+    // Request user from id server
+    // get nonce
+    const { nonce, serverArmoredPubkeyb64 } = await getNonce();
     const serverArmoredPubkey = Buffer.from(
       serverArmoredPubkeyb64,
       "base64"
@@ -38,9 +39,10 @@ const sifirId = ({
       // send it off to get user nad pass
       const { body } = await agent.post(`${idServerUrl}/auth/register/`).send({
         ...payload,
-        pubkeyArmoredb64: Buffer.from(await getPubkeyArmored(), "utf8").toString(
-          "base64"
-        ),
+        pubkeyArmoredb64: Buffer.from(
+          await getPubkeyArmored(),
+          "utf8"
+        ).toString("base64"),
         signatureb64: Buffer.from(armoredSignature, "utf8").toString("base64")
       });
       return body;
@@ -53,6 +55,6 @@ const sifirId = ({
     }
   };
 
-  return { registerUserKey };
+  return { registerUserKey, getNonce };
 };
 export { sifirId };

@@ -57,40 +57,51 @@ var debug = debug_1.default("sifirutil:");
 var sifirId = function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.pgpLib, pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
     var getPubkeyArmored = pgpLib.getPubkeyArmored, signMessage = pgpLib.signMessage, getKeyFingerprint = pgpLib.getKeyFingerprint;
+    var getNonce = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var _a, serverArmoredPubkeyb64, nonce;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, superagent_1.default.get(idServerUrl + "/auth/")];
+                case 1:
+                    _a = (_b.sent()).body, serverArmoredPubkeyb64 = _a.serverArmoredPubkeyb64, nonce = _a.nonce;
+                    return [2 /*return*/, { nonce: nonce, serverArmoredPubkeyb64: serverArmoredPubkeyb64 }];
+            }
+        });
+    }); };
     var registerUserKey = function (_a) {
         var user = _a.user;
         return __awaiter(void 0, void 0, void 0, function () {
-            var _b, serverArmoredPubkeyb64, nonce, _c, token, key, serverArmoredPubkey, fingerprint, payload, armoredSignature, body, _d, _e, _f, _g, _h, _j, err_1, status_1, text;
-            return __generator(this, function (_k) {
-                switch (_k.label) {
-                    case 0: return [4 /*yield*/, superagent_1.default.get(idServerUrl + "/auth/")];
+            var _b, nonce, serverArmoredPubkeyb64, serverArmoredPubkey, fingerprint, payload, armoredSignature, body, _c, _d, _e, _f, _g, _h, err_1, status_1, text;
+            return __generator(this, function (_j) {
+                switch (_j.label) {
+                    case 0: return [4 /*yield*/, getNonce()];
                     case 1:
-                        _b = (_k.sent()).body, serverArmoredPubkeyb64 = _b.serverArmoredPubkeyb64, nonce = _b.nonce;
-                        _c = JSON.parse(Buffer.from(nonce, "base64").toString("utf8")), token = _c.token, key = _c.key;
+                        _b = _j.sent(), nonce = _b.nonce, serverArmoredPubkeyb64 = _b.serverArmoredPubkeyb64;
                         serverArmoredPubkey = Buffer.from(serverArmoredPubkeyb64, "base64").toString("utf8");
-                        _k.label = 2;
+                        _j.label = 2;
                     case 2:
-                        _k.trys.push([2, 7, , 8]);
+                        _j.trys.push([2, 7, , 8]);
                         return [4 /*yield*/, getKeyFingerprint()];
                     case 3:
-                        fingerprint = _k.sent();
+                        fingerprint = _j.sent();
                         payload = { nonce: nonce, username: user, keyId: fingerprint };
                         return [4 /*yield*/, signMessage({
                                 msg: JSON.stringify(payload)
                             })];
                     case 4:
-                        armoredSignature = (_k.sent()).armoredSignature;
-                        _e = (_d = superagent_1.default.post(idServerUrl + "/auth/register/")).send;
-                        _f = [__assign({}, payload)];
-                        _g = {};
-                        _j = (_h = Buffer).from;
+                        armoredSignature = (_j.sent()).armoredSignature;
+                        _d = (_c = superagent_1.default.post(idServerUrl + "/auth/register/")).send;
+                        _e = [__assign({}, payload)];
+                        _f = {};
+                        _h = (_g = Buffer).from;
                         return [4 /*yield*/, getPubkeyArmored()];
-                    case 5: return [4 /*yield*/, _e.apply(_d, [__assign.apply(void 0, _f.concat([(_g.pubkeyArmoredb64 = _j.apply(_h, [_k.sent(), "utf8"]).toString("base64"), _g.signatureb64 = Buffer.from(armoredSignature, "utf8").toString("base64"), _g)]))])];
+                    case 5: return [4 /*yield*/, _d.apply(_c, [__assign.apply(void 0, _e.concat([(_f.pubkeyArmoredb64 = _h.apply(_g, [_j.sent(),
+                                    "utf8"]).toString("base64"), _f.signatureb64 = Buffer.from(armoredSignature, "utf8").toString("base64"), _f)]))])];
                     case 6:
-                        body = (_k.sent()).body;
+                        body = (_j.sent()).body;
                         return [2 /*return*/, body];
                     case 7:
-                        err_1 = _k.sent();
+                        err_1 = _j.sent();
                         status_1 = err_1.status, text = err_1.response.text;
                         debug("error setting node user", status_1, text);
                         return [3 /*break*/, 8];
@@ -99,6 +110,6 @@ var sifirId = function (_a) {
             });
         });
     };
-    return { registerUserKey: registerUserKey };
+    return { registerUserKey: registerUserKey, getNonce: getNonce };
 };
 exports.sifirId = sifirId;
