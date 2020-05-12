@@ -78,27 +78,31 @@ test.skip("Should generate a new PGP key", function (t) { return __awaiter(void 
     });
 }); });
 test("Should be able to init and unlock keys, returning fingerprint, hex and pubkey", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, makeNewPgpKey, initAndUnlockKeys, passphrase, _b, privateKeyArmored, publicKeyArmored, revocationCertificate, _c, fingerprint, hexkeyId, pubkeyArmored;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
+    var _a, getPubkeyArmored, getKeyFingerprint, makeNewPgpKey, initAndUnlockKeys, passphrase, _b, privatekeyArmored, publickeyArmored, revocationCertificate, _c, fingerprint, hexkeyId, pubkeyArmored, _d, _e, _f;
+    return __generator(this, function (_g) {
+        switch (_g.label) {
             case 0:
-                _a = t.context, makeNewPgpKey = _a.makeNewPgpKey, initAndUnlockKeys = _a.initAndUnlockKeys;
+                _a = t.context, getPubkeyArmored = _a.getPubkeyArmored, getKeyFingerprint = _a.getKeyFingerprint, makeNewPgpKey = _a.makeNewPgpKey, initAndUnlockKeys = _a.initAndUnlockKeys;
                 passphrase = "random pas";
                 return [4 /*yield*/, makeNewPgpKey({
                         passphrase: passphrase,
                         user: "testuser"
                     })];
             case 1:
-                _b = _d.sent(), privateKeyArmored = _b.privateKeyArmored, publicKeyArmored = _b.publicKeyArmored, revocationCertificate = _b.revocationCertificate;
+                _b = _g.sent(), privatekeyArmored = _b.privatekeyArmored, publickeyArmored = _b.publickeyArmored, revocationCertificate = _b.revocationCertificate;
                 return [4 /*yield*/, initAndUnlockKeys({
-                        privatekeyArmored: privateKeyArmored,
+                        privatekeyArmored: privatekeyArmored,
                         passphrase: passphrase
                     })];
             case 2:
-                _c = _d.sent(), fingerprint = _c.fingerprint, hexkeyId = _c.hexkeyId, pubkeyArmored = _c.pubkeyArmored;
-                t.true(!!fingerprint.length);
+                _c = _g.sent(), fingerprint = _c.fingerprint, hexkeyId = _c.hexkeyId, pubkeyArmored = _c.pubkeyArmored;
+                _e = (_d = t).is;
+                _f = [fingerprint];
+                return [4 /*yield*/, getKeyFingerprint()];
+            case 3:
+                _e.apply(_d, _f.concat([_g.sent()]));
+                t.is(pubkeyArmored, getPubkeyArmored());
                 t.true(!!hexkeyId.length);
-                t.true(!!pubkeyArmored);
                 return [2 /*return*/];
         }
     });

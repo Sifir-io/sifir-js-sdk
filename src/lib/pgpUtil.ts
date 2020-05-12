@@ -177,7 +177,7 @@ const pgpUtil = ({
   //};
   const getKeyFingerprint = async ({
     armoredkey = undefined,
-    encoding = "hex"
+    encoding = "utf8"
   }: {
     armoredkey?: string;
     encoding?: "hex" | "utf8";
@@ -192,7 +192,6 @@ const pgpUtil = ({
     }
     return Buffer.from(fingerprint)
       .toString(encoding)
-      .toUpperCase();
   };
   const encryptMessage = async ({ msg, pubkey }: EncryptMessagePayload) => {
     if (!decryptedPrivkeyObj) throw "Key not init";

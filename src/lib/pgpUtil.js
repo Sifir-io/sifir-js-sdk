@@ -182,7 +182,7 @@ var pgpUtil = function (_a) {
     //    .toUpperCase();
     //};
     var getKeyFingerprint = function (_a) {
-        var _b = _a === void 0 ? {} : _a, _c = _b.armoredkey, armoredkey = _c === void 0 ? undefined : _c, _d = _b.encoding, encoding = _d === void 0 ? "hex" : _d;
+        var _b = _a === void 0 ? {} : _a, _c = _b.armoredkey, armoredkey = _c === void 0 ? undefined : _c, _d = _b.encoding, encoding = _d === void 0 ? "utf8" : _d;
         return __awaiter(void 0, void 0, void 0, function () {
             var fingerprint, primaryKey;
             return __generator(this, function (_e) {
@@ -199,8 +199,7 @@ var pgpUtil = function (_a) {
                         fingerprint = primaryKey.fingerprint;
                         _e.label = 3;
                     case 3: return [2 /*return*/, Buffer.from(fingerprint)
-                            .toString(encoding)
-                            .toUpperCase()];
+                            .toString(encoding)];
                 }
             });
         });

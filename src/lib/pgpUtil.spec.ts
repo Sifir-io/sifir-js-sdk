@@ -24,23 +24,28 @@ test.skip("Should generate a new PGP key", async t => {
   t.true(!!revocationCertificate.length);
 });
 test("Should be able to init and unlock keys, returning fingerprint, hex and pubkey", async t => {
-  const { makeNewPgpKey, initAndUnlockKeys } = t.context;
+  const {
+    getPubkeyArmored,
+    getKeyFingerprint,
+    makeNewPgpKey,
+    initAndUnlockKeys
+  } = t.context;
   const passphrase = "random pas";
   const {
-    privateKeyArmored,
-    publicKeyArmored,
+    privatekeyArmored,
+    publickeyArmored,
     revocationCertificate
   } = await makeNewPgpKey({
     passphrase,
     user: "testuser"
   });
   const { fingerprint, hexkeyId, pubkeyArmored } = await initAndUnlockKeys({
-    privatekeyArmored: privateKeyArmored,
+    privatekeyArmored: privatekeyArmored,
     passphrase
   });
-  t.true(!!fingerprint.length);
+  t.is(fingerprint, await getKeyFingerprint());
+  t.is(pubkeyArmored, getPubkeyArmored());
   t.true(!!hexkeyId.length);
-  t.true(!!pubkeyArmored);
 });
 
 // FIXME standrazie make new key return types, integration test API register call
