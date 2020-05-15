@@ -91,8 +91,8 @@ var pgpUtil = function (_a) {
                     case 1:
                         _b = _c.sent(), privateKeyArmored = _b.privateKeyArmored, publicKeyArmored = _b.publicKeyArmored, revocationCertificate = _b.revocationCertificate;
                         return [2 /*return*/, {
-                                privatekeyArmored: privateKeyArmored,
-                                publickeyArmored: publicKeyArmored,
+                                privkeyArmored: privateKeyArmored,
+                                pubkeyArmored: publicKeyArmored,
                                 revocationCertificate: revocationCertificate
                             }];
                 }
@@ -100,15 +100,15 @@ var pgpUtil = function (_a) {
         });
     };
     var initAndUnlockKeys = function (_a) {
-        var privatekeyArmored = _a.privatekeyArmored, passphrase = _a.passphrase;
+        var privkeyArmored = _a.privkeyArmored, passphrase = _a.passphrase;
         return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        if (!privatekeyArmored || !passphrase) {
+                        if (!privkeyArmored || !passphrase) {
                             throw "Missing key and pass";
                         }
-                        return [4 /*yield*/, _getDecryptedPrivateKeyFromArmored(privatekeyArmored, passphrase)];
+                        return [4 /*yield*/, _getDecryptedPrivateKeyFromArmored(privkeyArmored, passphrase)];
                     case 1:
                         decryptedPrivkeyObj = _b.sent();
                         return [2 /*return*/, {
@@ -198,8 +198,7 @@ var pgpUtil = function (_a) {
                         primaryKey = (_e.sent()).primaryKey;
                         fingerprint = primaryKey.fingerprint;
                         _e.label = 3;
-                    case 3: return [2 /*return*/, Buffer.from(fingerprint)
-                            .toString(encoding)];
+                    case 3: return [2 /*return*/, Buffer.from(fingerprint).toString(encoding)];
                 }
             });
         });

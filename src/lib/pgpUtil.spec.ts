@@ -12,15 +12,15 @@ test.before(t => {
 test.skip("Should generate a new PGP key", async t => {
   const { makeNewPgpKey } = t.context;
   const {
-    privateKeyArmored,
-    publicKeyArmored,
+    privkeyArmored,
+    pubkeyArmored,
     revocationCertificate
   } = await makeNewPgpKey({
     passphrase: "random pas",
     user: "testuser"
   });
-  t.true(!!privateKeyArmored.length);
-  t.true(!!publicKeyArmored.length);
+  t.true(!!privkeyArmored.length);
+  t.true(!!pubkeyArmored.length);
   t.true(!!revocationCertificate.length);
 });
 test("Should be able to init and unlock keys, returning fingerprint, hex and pubkey", async t => {
@@ -31,23 +31,15 @@ test("Should be able to init and unlock keys, returning fingerprint, hex and pub
     initAndUnlockKeys
   } = t.context;
   const passphrase = "random pas";
-  const {
-    privatekeyArmored,
-    publickeyArmored,
-    revocationCertificate
-  } = await makeNewPgpKey({
+  const { privkeyArmored, revocationCertificate } = await makeNewPgpKey({
     passphrase,
     user: "testuser"
   });
   const { fingerprint, hexkeyId, pubkeyArmored } = await initAndUnlockKeys({
-    privatekeyArmored: privatekeyArmored,
+    privkeyArmored: privkeyArmored,
     passphrase
   });
   t.is(fingerprint, await getKeyFingerprint());
   t.is(pubkeyArmored, getPubkeyArmored());
   t.true(!!hexkeyId.length);
 });
-
-// FIXME standrazie make new key return types, integration test API register call
-// 2. Update RN pgp libb
-//

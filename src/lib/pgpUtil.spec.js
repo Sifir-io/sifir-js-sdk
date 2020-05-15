@@ -59,7 +59,7 @@ test.before(function (t) {
     t.context = __assign({}, pgpUtil_1.pgpUtil());
 });
 test.skip("Should generate a new PGP key", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var makeNewPgpKey, _a, privateKeyArmored, publicKeyArmored, revocationCertificate;
+    var makeNewPgpKey, _a, privkeyArmored, pubkeyArmored, revocationCertificate;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -69,16 +69,16 @@ test.skip("Should generate a new PGP key", function (t) { return __awaiter(void 
                         user: "testuser"
                     })];
             case 1:
-                _a = _b.sent(), privateKeyArmored = _a.privateKeyArmored, publicKeyArmored = _a.publicKeyArmored, revocationCertificate = _a.revocationCertificate;
-                t.true(!!privateKeyArmored.length);
-                t.true(!!publicKeyArmored.length);
+                _a = _b.sent(), privkeyArmored = _a.privkeyArmored, pubkeyArmored = _a.pubkeyArmored, revocationCertificate = _a.revocationCertificate;
+                t.true(!!privkeyArmored.length);
+                t.true(!!pubkeyArmored.length);
                 t.true(!!revocationCertificate.length);
                 return [2 /*return*/];
         }
     });
 }); });
 test("Should be able to init and unlock keys, returning fingerprint, hex and pubkey", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, getPubkeyArmored, getKeyFingerprint, makeNewPgpKey, initAndUnlockKeys, passphrase, _b, privatekeyArmored, publickeyArmored, revocationCertificate, _c, fingerprint, hexkeyId, pubkeyArmored, _d, _e, _f;
+    var _a, getPubkeyArmored, getKeyFingerprint, makeNewPgpKey, initAndUnlockKeys, passphrase, _b, privkeyArmored, revocationCertificate, _c, fingerprint, hexkeyId, pubkeyArmored, _d, _e, _f;
     return __generator(this, function (_g) {
         switch (_g.label) {
             case 0:
@@ -89,9 +89,9 @@ test("Should be able to init and unlock keys, returning fingerprint, hex and pub
                         user: "testuser"
                     })];
             case 1:
-                _b = _g.sent(), privatekeyArmored = _b.privatekeyArmored, publickeyArmored = _b.publickeyArmored, revocationCertificate = _b.revocationCertificate;
+                _b = _g.sent(), privkeyArmored = _b.privkeyArmored, revocationCertificate = _b.revocationCertificate;
                 return [4 /*yield*/, initAndUnlockKeys({
-                        privatekeyArmored: privatekeyArmored,
+                        privkeyArmored: privkeyArmored,
                         passphrase: passphrase
                     })];
             case 2:
@@ -107,6 +107,3 @@ test("Should be able to init and unlock keys, returning fingerprint, hex and pub
         }
     });
 }); });
-// FIXME standrazie make new key return types, integration test API register call
-// 2. Update RN pgp libb
-//

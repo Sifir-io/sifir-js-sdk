@@ -48,15 +48,15 @@ export interface SifirPgpUtil {
     email?: string;
     user?: string;
   }): Promise<{
-    privatekeyArmored: string;
-    publickeyArmored: string;
+    privkeyArmored: string;
+    pubkeyArmored: string;
     revocationCertificate: string;
   }>;
   initAndUnlockKeys({
-    privatekeyArmored,
+    privkeyArmored,
     passphrase
   }: {
-    privatekeyArmored: string;
+    privkeyArmored: string;
     passphrase: string;
   }): Promise<{ pubkeyArmored: string; fingerprint: string; hexkeyId: string }>;
 }
@@ -90,7 +90,11 @@ const pgpUtil = ({
     passphrase: string;
     email?: string;
     user?: string;
-  }) => {
+  }): Promise<{
+    privkeyArmored: string;
+    pubkeyArmored: string;
+    revocationCertificate: string;
+  }> => {
     const {
       privateKeyArmored,
       publicKeyArmored,
@@ -101,24 +105,28 @@ const pgpUtil = ({
       passphrase
     });
     return {
-      privatekeyArmored: privateKeyArmored,
-      publickeyArmored: publicKeyArmored,
+      privkeyArmored: privateKeyArmored,
+      pubkeyArmored: publicKeyArmored,
       revocationCertificate
     };
   };
 
   const initAndUnlockKeys = async ({
-    privatekeyArmored,
+    privkeyArmored,
     passphrase
   }: {
-    privatekeyArmored: string;
+    privkeyArmored: string;
     passphrase: string;
-  }) => {
-    if (!privatekeyArmored || !passphrase) {
+  }): Promise<{
+    pubkeyArmored: string;
+    fingerprint: string;
+    hexkeyId: string;
+  }> => {
+    if (!privkeyArmored || !passphrase) {
       throw "Missing key and pass";
     }
     decryptedPrivkeyObj = await _getDecryptedPrivateKeyFromArmored(
-      privatekeyArmored,
+      privkeyArmored,
       passphrase
     );
     return {
@@ -190,8 +198,7 @@ const pgpUtil = ({
       const { primaryKey } = await _getPrimarykeyFromArmored(armoredkey);
       fingerprint = primaryKey.fingerprint;
     }
-    return Buffer.from(fingerprint)
-      .toString(encoding)
+    return Buffer.from(fingerprint).toString(encoding);
   };
   const encryptMessage = async ({ msg, pubkey }: EncryptMessagePayload) => {
     if (!decryptedPrivkeyObj) throw "Key not init";
