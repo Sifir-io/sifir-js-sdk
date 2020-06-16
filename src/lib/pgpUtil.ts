@@ -32,6 +32,18 @@ export interface SifirPgpUtil {
     armoredSignature: string;
     armoredEncryptedMsg: string;
   }>;
+  // TODO implmement this.
+  getKeyInfo(
+    armoredKey: string,
+    passphrase?: string
+  ): Promise<{
+    pubkeyArmored: string;
+    fingerprint: string;
+    hexkeyId: string;
+    isPrivate: boolean;
+    isLocked: boolean;
+    isExpired: boolean;
+  }>;
   getKeyFingerprint({
     armoredkey,
     encoding
