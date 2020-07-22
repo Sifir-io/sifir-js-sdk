@@ -110,6 +110,101 @@ var sifirId = function (_a) {
             });
         });
     };
-    return { registerUserKey: registerUserKey, getNonce: getNonce };
+    var signAndUploadKeyMeta = function (metaKey, metaValueb64) { return __awaiter(void 0, void 0, void 0, function () {
+        var keyId, armoredSignature, body;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getKeyFingerprint()];
+                case 1:
+                    keyId = _a.sent();
+                    return [4 /*yield*/, signMessage({
+                            msg: metaValueb64
+                        })];
+                case 2:
+                    armoredSignature = (_a.sent()).armoredSignature;
+                    return [4 /*yield*/, superagent_1.default.post(idServerUrl + "/keys/meta").send({
+                            metaKey: metaKey,
+                            metaValueb64: metaValueb64,
+                            signatureb64: Buffer.from(armoredSignature).toString("base64"),
+                            keyId: keyId
+                        })];
+                case 3:
+                    body = (_a.sent()).body;
+                    return [2 /*return*/, body];
+            }
+        });
+    }); };
+    var signAndUploadKeyAvatar = function (photoBase64) { return __awaiter(void 0, void 0, void 0, function () {
+        var metaId;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserAvatarImg", photoBase64)];
+                case 1:
+                    metaId = (_a.sent()).metaId;
+                    return [2 /*return*/, metaId];
+            }
+        });
+    }); };
+    var signAndUploadKeyDisplayName = function (displayName) { return __awaiter(void 0, void 0, void 0, function () {
+        var metaId;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserDisplayName", Buffer.from(displayName).toString("base64"))];
+                case 1:
+                    metaId = (_a.sent()).metaId;
+                    return [2 /*return*/, metaId];
+            }
+        });
+    }); };
+    var signMetaAttestation = function (_a) {
+        var metaId = _a.metaId, metaValueb64 = _a.metaValueb64, metaSignatureb64 = _a.metaSignatureb64, attestations = _a.attestations // FIXME ... do we sign this
+        ;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var armoredSignature, attestingPayload, _b, body;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0: return [4 /*yield*/, signMessage({
+                            msg: metaSignatureb64
+                        })];
+                    case 1:
+                        armoredSignature = (_c.sent()).armoredSignature;
+                        _b = {
+                            metaId: metaId,
+                            metaSignatureb64: metaSignatureb64,
+                            signatureb64: Buffer.from(armoredSignature).toString("base64")
+                        };
+                        return [4 /*yield*/, getKeyFingerprint()];
+                    case 2:
+                        attestingPayload = (_b.keyId = _c.sent(),
+                            _b);
+                        return [4 /*yield*/, superagent_1.default
+                                .post(idServerUrl + "/keys/meta/" + metaId + "/attest")
+                                .send(attestingPayload)];
+                    case 3:
+                        body = (_c.sent()).body;
+                        return [2 /*return*/, body.attestationId];
+                }
+            });
+        });
+    };
+    var getKeyAttestations = function (keyId) { return __awaiter(void 0, void 0, void 0, function () {
+        var body, keyMetaInfo, keyInfo;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, superagent_1.default.get(idServerUrl + "/keys/" + keyId)];
+                case 1:
+                    body = (_a.sent()).body;
+                    keyMetaInfo = body.keyMetaInfo, keyInfo = body.keyInfo;
+                    return [2 /*return*/, { keyMetaInfo: keyMetaInfo, keyInfo: keyInfo }];
+            }
+        });
+    }); };
+    return {
+        registerUserKey: registerUserKey,
+        getNonce: getNonce,
+        signAndUploadKeyDisplayName: signAndUploadKeyDisplayName,
+        signAndUploadKeyAvatar: signAndUploadKeyAvatar,
+        signMetaAttestation: signMetaAttestation
+    };
 };
 exports.sifirId = sifirId;

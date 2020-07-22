@@ -8,6 +8,25 @@ const debug = _debug("sifirutil:");
 interface RegisterUserKeyParam {
   user: string;
 }
+interface Attestation {
+  attestingKeyFingerprint: string;
+  attestationSigbb64: string;
+}
+interface KeyAttestation {
+  metaId: string;
+  metaValueb64: string;
+  metaSignature64: string;
+  attestations: [Attestation];
+}
+interface KeyAttestationsPayload {
+  fingerprint: string;
+  metaDict: { [keyId: string]: KeyAttestation };
+}
+interface KeyInfoPayload {
+  user: string;
+  fingerprint: string;
+  armoredPub64: string;
+}
 const sifirId = ({
   pgpLib = _pgpUtil(),
   idServerUrl = "https://pairing.sifir.io"
@@ -55,6 +74,84 @@ const sifirId = ({
     }
   };
 
-  return { registerUserKey, getNonce };
+  const signAndUploadKeyMeta = async (
+    metaKey: string,
+    metaValueb64: string
+  ) => {
+    const keyId = await getKeyFingerprint();
+    const { armoredSignature } = await signMessage({
+      msg: metaValueb64
+    });
+    const { body } = await agent.post(`${idServerUrl}/keys/meta`).send({
+      metaKey,
+      metaValueb64,
+      signatureb64: Buffer.from(armoredSignature).toString("base64"),
+      keyId
+    });
+    return body;
+  };
+  const signAndUploadKeyAvatar = async (
+    photoBase64: string
+  ): Promise<number> => {
+    const { metaId } = await signAndUploadKeyMeta(
+      "keyUserAvatarImg",
+      photoBase64
+    );
+    return metaId;
+  };
+  const signAndUploadKeyDisplayName = async (
+    displayName: string
+  ): Promise<number> => {
+    const { metaId } = await signAndUploadKeyMeta(
+      "keyUserDisplayName",
+      Buffer.from(displayName).toString("base64")
+    );
+    return metaId;
+  };
+
+  const signMetaAttestation = async ({
+    metaId,
+    metaValueb64,
+    metaSignatureb64,
+    attestations // FIXME ... do we sign this
+  }: {
+    metaId: string;
+    metaValueb64: string;
+    metaSignatureb64: string;
+    attestations: [string];
+  }) => {
+    const { armoredSignature } = await signMessage({
+      msg: metaSignatureb64
+    });
+
+    const attestingPayload = {
+      metaId,
+      metaSignatureb64,
+      signatureb64: Buffer.from(armoredSignature).toString("base64"),
+      keyId: await getKeyFingerprint()
+    };
+    const { body } = await agent
+      .post(`${idServerUrl}/keys/meta/${metaId}/attest`)
+      .send(attestingPayload);
+    return body.attestationId;
+  };
+  const getKeyAttestations = async (
+    keyId: string
+  ): Promise<{
+    keyMetaInfo: KeyAttestationsPayload;
+    keyInfo: KeyInfoPayload;
+  }> => {
+    const { body } = await agent.get(`${idServerUrl}/keys/${keyId}`);
+    const { keyMetaInfo, keyInfo } = body;
+
+    return { keyMetaInfo, keyInfo };
+  };
+  return {
+    registerUserKey,
+    getNonce,
+    signAndUploadKeyDisplayName,
+    signAndUploadKeyAvatar,
+    signMetaAttestation
+  };
 };
 export { sifirId };
