@@ -146,12 +146,27 @@ const sifirId = ({
 
     return { keyMetaInfo, keyInfo };
   };
+  const getKeyList = async ({
+    limit = 10,
+    offset = 0,
+    user
+  }: {
+    limit: number;
+    offset: number;
+    user: string;
+  }): Promise<[{ user: string; fingerprint: string }]> => {
+    const {
+      body: { keys }
+    } = await agent.get(`${idServerUrl}/keys`).query({ limit, offset, user });
+    return keys;
+  };
   return {
     registerUserKey,
     getNonce,
     signAndUploadKeyDisplayName,
     signAndUploadKeyAvatar,
-    signMetaAttestation
+    signMetaAttestation,
+    getKeyList
   };
 };
 export { sifirId };

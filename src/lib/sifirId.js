@@ -199,12 +199,27 @@ var sifirId = function (_a) {
             }
         });
     }); };
+    var getKeyList = function (_a) {
+        var _b = _a.limit, limit = _b === void 0 ? 10 : _b, _c = _a.offset, offset = _c === void 0 ? 0 : _c, user = _a.user;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var keys;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0: return [4 /*yield*/, superagent_1.default.get(idServerUrl + "/keys").query({ limit: limit, offset: offset, user: user })];
+                    case 1:
+                        keys = (_d.sent()).body.keys;
+                        return [2 /*return*/, keys];
+                }
+            });
+        });
+    };
     return {
         registerUserKey: registerUserKey,
         getNonce: getNonce,
         signAndUploadKeyDisplayName: signAndUploadKeyDisplayName,
         signAndUploadKeyAvatar: signAndUploadKeyAvatar,
-        signMetaAttestation: signMetaAttestation
+        signMetaAttestation: signMetaAttestation,
+        getKeyList: getKeyList
     };
 };
 exports.sifirId = sifirId;
