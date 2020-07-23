@@ -166,7 +166,6 @@ const sifirId = ({
       .send(attestingPayload);
     return body.attestationId;
   };
-  // TODO export this, ADD email, twitter, bio and website fns to lib
   const getKeyAttestations = async (
     keyId: string
   ): Promise<{

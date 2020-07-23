@@ -231,7 +231,6 @@ var sifirId = function (_a) {
             });
         });
     };
-    // TODO export this, ADD email, twitter, bio and website fns to lib
     var getKeyAttestations = function (keyId) { return __awaiter(void 0, void 0, void 0, function () {
         var body, keyMetaInfo, keyInfo;
         return __generator(this, function (_a) {
