@@ -108,7 +108,39 @@ const sifirId = ({
     );
     return metaId;
   };
+  const signAndUploadKeyBio = async (bio: string): Promise<number> => {
+    const { metaId } = await signAndUploadKeyMeta(
+      "keyUserBio",
+      Buffer.from(bio).toString("base64")
+    );
+    return metaId;
+  };
 
+  const signAndUploadKeyWebsiteURL = async (
+    siteUrl: string
+  ): Promise<number> => {
+    const { metaId } = await signAndUploadKeyMeta(
+      "keyUserWebsiteUrl",
+      Buffer.from(siteUrl).toString("base64")
+    );
+    return metaId;
+  };
+  const signAndUploadKeyEmail = async (email: string): Promise<number> => {
+    const { metaId } = await signAndUploadKeyMeta(
+      "keyUserEmail",
+      Buffer.from(email).toString("base64")
+    );
+    return metaId;
+  };
+  const signAndUploadKeyTwitter = async (
+    twitterHandle: string
+  ): Promise<number> => {
+    const { metaId } = await signAndUploadKeyMeta(
+      "keyUserTwitter",
+      Buffer.from(twitterHandle).toString("base64")
+    );
+    return metaId;
+  };
   const signMetaAttestation = async ({
     metaId,
     metaValueb64,
@@ -119,11 +151,10 @@ const sifirId = ({
     metaValueb64: string;
     metaSignatureb64: string;
     attestations: [string];
-  }) => {
+  }): Promise<number> => {
     const { armoredSignature } = await signMessage({
       msg: metaSignatureb64
     });
-
     const attestingPayload = {
       metaId,
       metaSignatureb64,
@@ -135,6 +166,7 @@ const sifirId = ({
       .send(attestingPayload);
     return body.attestationId;
   };
+  // TODO export this, ADD email, twitter, bio and website fns to lib
   const getKeyAttestations = async (
     keyId: string
   ): Promise<{
@@ -143,7 +175,6 @@ const sifirId = ({
   }> => {
     const { body } = await agent.get(`${idServerUrl}/keys/${keyId}`);
     const { keyMetaInfo, keyInfo } = body;
-
     return { keyMetaInfo, keyInfo };
   };
   const getKeyList = async ({
@@ -163,10 +194,15 @@ const sifirId = ({
   return {
     registerUserKey,
     getNonce,
-    signAndUploadKeyDisplayName,
     signAndUploadKeyAvatar,
+    signAndUploadKeyDisplayName,
     signMetaAttestation,
-    getKeyList
+    signAndUploadKeyBio,
+    signAndUploadKeyWebsiteURL,
+    signAndUploadKeyEmail,
+    signAndUploadKeyTwitter,
+    getKeyList,
+    getKeyAttestations
   };
 };
 export { sifirId };

@@ -156,6 +156,50 @@ var sifirId = function (_a) {
             }
         });
     }); };
+    var signAndUploadKeyBio = function (bio) { return __awaiter(void 0, void 0, void 0, function () {
+        var metaId;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserBio", Buffer.from(bio).toString("base64"))];
+                case 1:
+                    metaId = (_a.sent()).metaId;
+                    return [2 /*return*/, metaId];
+            }
+        });
+    }); };
+    var signAndUploadKeyWebsiteURL = function (siteUrl) { return __awaiter(void 0, void 0, void 0, function () {
+        var metaId;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserWebsiteUrl", Buffer.from(siteUrl).toString("base64"))];
+                case 1:
+                    metaId = (_a.sent()).metaId;
+                    return [2 /*return*/, metaId];
+            }
+        });
+    }); };
+    var signAndUploadKeyEmail = function (email) { return __awaiter(void 0, void 0, void 0, function () {
+        var metaId;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserEmail", Buffer.from(email).toString("base64"))];
+                case 1:
+                    metaId = (_a.sent()).metaId;
+                    return [2 /*return*/, metaId];
+            }
+        });
+    }); };
+    var signAndUploadKeyTwitter = function (twitterHandle) { return __awaiter(void 0, void 0, void 0, function () {
+        var metaId;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserTwitter", Buffer.from(twitterHandle).toString("base64"))];
+                case 1:
+                    metaId = (_a.sent()).metaId;
+                    return [2 /*return*/, metaId];
+            }
+        });
+    }); };
     var signMetaAttestation = function (_a) {
         var metaId = _a.metaId, metaValueb64 = _a.metaValueb64, metaSignatureb64 = _a.metaSignatureb64, attestations = _a.attestations // FIXME ... do we sign this
         ;
@@ -187,6 +231,7 @@ var sifirId = function (_a) {
             });
         });
     };
+    // TODO export this, ADD email, twitter, bio and website fns to lib
     var getKeyAttestations = function (keyId) { return __awaiter(void 0, void 0, void 0, function () {
         var body, keyMetaInfo, keyInfo;
         return __generator(this, function (_a) {
@@ -216,10 +261,15 @@ var sifirId = function (_a) {
     return {
         registerUserKey: registerUserKey,
         getNonce: getNonce,
-        signAndUploadKeyDisplayName: signAndUploadKeyDisplayName,
         signAndUploadKeyAvatar: signAndUploadKeyAvatar,
+        signAndUploadKeyDisplayName: signAndUploadKeyDisplayName,
         signMetaAttestation: signMetaAttestation,
-        getKeyList: getKeyList
+        signAndUploadKeyBio: signAndUploadKeyBio,
+        signAndUploadKeyWebsiteURL: signAndUploadKeyWebsiteURL,
+        signAndUploadKeyEmail: signAndUploadKeyEmail,
+        signAndUploadKeyTwitter: signAndUploadKeyTwitter,
+        getKeyList: getKeyList,
+        getKeyAttestations: getKeyAttestations
     };
 };
 exports.sifirId = sifirId;
