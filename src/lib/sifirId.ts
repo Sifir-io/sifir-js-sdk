@@ -27,6 +27,14 @@ interface KeyInfoPayload {
   fingerprint: string;
   armoredPub64: string;
 }
+const KeyMetaTypes = {
+  keyUserAvatarImg: "keyUserAvatarImg",
+  keyUserDisplayName: "keyUserDisplayName",
+  keyUserBio: "keyUserBio",
+  keyUserWebsiteUrl: "keyUserWebsiteUrl",
+  keyUserEmail: "keyUserEmail",
+  keyUserTwitter: "keyUserTwitter"
+};
 const sifirId = ({
   pgpLib = _pgpUtil(),
   idServerUrl = "https://pairing.sifir.io"
@@ -94,7 +102,7 @@ const sifirId = ({
     photoBase64: string
   ): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
-      "keyUserAvatarImg",
+      KeyMetaTypes.keyUserAvatarImg,
       photoBase64
     );
     return metaId;
@@ -103,14 +111,14 @@ const sifirId = ({
     displayName: string
   ): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
-      "keyUserDisplayName",
+      KeyMetaTypes.keyUserDisplayName,
       Buffer.from(displayName).toString("base64")
     );
     return metaId;
   };
   const signAndUploadKeyBio = async (bio: string): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
-      "keyUserBio",
+      KeyMetaTypes.keyUserBio,
       Buffer.from(bio).toString("base64")
     );
     return metaId;
@@ -120,14 +128,14 @@ const sifirId = ({
     siteUrl: string
   ): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
-      "keyUserWebsiteUrl",
+      KeyMetaTypes.keyUserWebsiteUrl,
       Buffer.from(siteUrl).toString("base64")
     );
     return metaId;
   };
   const signAndUploadKeyEmail = async (email: string): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
-      "keyUserEmail",
+      KeyMetaTypes.keyUserEmail,
       Buffer.from(email).toString("base64")
     );
     return metaId;
@@ -136,7 +144,7 @@ const sifirId = ({
     twitterHandle: string
   ): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
-      "keyUserTwitter",
+      KeyMetaTypes.keyUserTwitter,
       Buffer.from(twitterHandle).toString("base64")
     );
     return metaId;
@@ -204,4 +212,4 @@ const sifirId = ({
     getKeyAttestations
   };
 };
-export { sifirId };
+export { sifirId, KeyMetaTypes };

@@ -54,6 +54,15 @@ var pgpUtil_1 = require("./pgpUtil");
 var debug_1 = __importDefault(require("debug"));
 var superagent_1 = __importDefault(require("superagent"));
 var debug = debug_1.default("sifirutil:");
+var KeyMetaTypes = {
+    keyUserAvatarImg: "keyUserAvatarImg",
+    keyUserDisplayName: "keyUserDisplayName",
+    keyUserBio: "keyUserBio",
+    keyUserWebsiteUrl: "keyUserWebsiteUrl",
+    keyUserEmail: "keyUserEmail",
+    keyUserTwitter: "keyUserTwitter"
+};
+exports.KeyMetaTypes = KeyMetaTypes;
 var sifirId = function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.pgpLib, pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
     var getPubkeyArmored = pgpLib.getPubkeyArmored, signMessage = pgpLib.signMessage, getKeyFingerprint = pgpLib.getKeyFingerprint;
@@ -138,7 +147,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserAvatarImg", photoBase64)];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserAvatarImg, photoBase64)];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -149,7 +158,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserDisplayName", Buffer.from(displayName).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserDisplayName, Buffer.from(displayName).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -160,7 +169,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserBio", Buffer.from(bio).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserBio, Buffer.from(bio).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -171,7 +180,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserWebsiteUrl", Buffer.from(siteUrl).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserWebsiteUrl, Buffer.from(siteUrl).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -182,7 +191,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserEmail", Buffer.from(email).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserEmail, Buffer.from(email).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -193,7 +202,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta("keyUserTwitter", Buffer.from(twitterHandle).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserTwitter, Buffer.from(twitterHandle).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];

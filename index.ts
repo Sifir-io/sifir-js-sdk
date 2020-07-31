@@ -9,4 +9,4 @@ export {
 } from "./src/transport/cypherNodeHttpTransport";
 export { crypto as cryptoUtils } from "./src/lib/cryptoUtil";
 export { pgpUtil } from "./src/lib/pgpUtil";
-export { sifirId } from "./src/lib/sifirId";
+export { sifirId, KeyMetaTypes } from "./src/lib/sifirId";

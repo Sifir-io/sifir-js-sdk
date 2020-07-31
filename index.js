@@ -20,3 +20,4 @@ var pgpUtil_1 = require("./src/lib/pgpUtil");
 exports.pgpUtil = pgpUtil_1.pgpUtil;
 var sifirId_1 = require("./src/lib/sifirId");
 exports.sifirId = sifirId_1.sifirId;
+exports.KeyMetaTypes = sifirId_1.KeyMetaTypes;
