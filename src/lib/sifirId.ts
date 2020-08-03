@@ -189,10 +189,21 @@ const sifirId = ({
     offset = 0,
     user
   }: {
-    limit: number;
-    offset: number;
-    user: string;
-  }): Promise<[{ user: string; fingerprint: string }]> => {
+    limit?: number;
+    offset?: number;
+    user?: string;
+  }): Promise<
+    [
+      {
+        user: string;
+        fingerprint: string;
+        keyUserAvatarImgValueb64: string;
+        keyUserDisplayNameValueb64: string;
+        inboundKeyMetaAttestationCount: number;
+        outBoundKeyMetaAttestationCount: number;
+      }
+    ]
+  > => {
     const {
       body: { keys }
     } = await agent.get(`${idServerUrl}/keys`).query({ limit, offset, user });
