@@ -55,31 +55,22 @@ const sifirId = ({
       "base64"
     ).toString("utf8");
 
-    try {
-      const fingerprint = await getKeyFingerprint();
-      // sign and encrypt payload with serverkey
-      const payload = { nonce, username: user, keyId: fingerprint };
-      const { armoredSignature } = await signMessage({
-        msg: JSON.stringify(payload)
-      });
+    const fingerprint = await getKeyFingerprint();
+    // sign and encrypt payload with serverkey
+    const payload = { nonce, username: user, keyId: fingerprint };
+    const { armoredSignature } = await signMessage({
+      msg: JSON.stringify(payload)
+    });
 
-      // send it off to get user nad pass
-      const { body } = await agent.post(`${idServerUrl}/auth/register/`).send({
-        ...payload,
-        pubkeyArmoredb64: Buffer.from(
-          await getPubkeyArmored(),
-          "utf8"
-        ).toString("base64"),
-        signatureb64: Buffer.from(armoredSignature, "utf8").toString("base64")
-      });
-      return body;
-    } catch (err) {
-      const {
-        status,
-        response: { text }
-      } = err;
-      debug("error setting node user", status, text);
-    }
+    // send it off to get user nad pass
+    const { body } = await agent.post(`${idServerUrl}/auth/register/`).send({
+      ...payload,
+      pubkeyArmoredb64: Buffer.from(await getPubkeyArmored(), "utf8").toString(
+        "base64"
+      ),
+      signatureb64: Buffer.from(armoredSignature, "utf8").toString("base64")
+    });
+    return body;
   };
 
   const signAndUploadKeyMeta = async (
