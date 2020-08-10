@@ -47,6 +47,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var debug_1 = __importDefault(require("debug"));
+var buffer_1 = require("buffer");
 var _pgp = __importStar(require("openpgp"));
 var pgpUtil = function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.pgp, pgp = _c === void 0 ? _pgp : _c, _d = _b.debug, debug = _d === void 0 ? debug_1.default("sifir:pgputil:") : _d;
@@ -114,7 +115,7 @@ var pgpUtil = function (_a) {
                         return [2 /*return*/, {
                                 pubkeyArmored: decryptedPrivkeyObj.toPublic().armor(),
                                 fingerprint: decryptedPrivkeyObj.keyPacket.getFingerprint(),
-                                hexkeyId: Buffer.from(decryptedPrivkeyObj.keyPacket.getKeyId().bytes).toString("hex")
+                                hexkeyId: buffer_1.Buffer.from(decryptedPrivkeyObj.keyPacket.getKeyId().bytes).toString("hex")
                             }];
                 }
             });
@@ -198,7 +199,7 @@ var pgpUtil = function (_a) {
                         primaryKey = (_e.sent()).primaryKey;
                         fingerprint = primaryKey.fingerprint;
                         _e.label = 3;
-                    case 3: return [2 /*return*/, Buffer.from(fingerprint).toString(encoding)];
+                    case 3: return [2 /*return*/, buffer_1.Buffer.from(fingerprint).toString(encoding)];
                 }
             });
         });

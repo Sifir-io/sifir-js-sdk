@@ -47,6 +47,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_js_1 = __importDefault(require("crypto-js"));
+var buffer_1 = require("buffer");
+//
 // import { createHmac } from "crypto";
 /**
  * Construct crypto functions needed dependig on env (Browser vs Nodde)
@@ -103,8 +105,8 @@ exports.crypto = function () {
                     case 0:
                         id = "00" + perm;
                         exp = Math.round(new Date().getTime() / 1000) + expiryInSeconds;
-                        h64 = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64");
-                        p64 = Buffer.from(JSON.stringify({ id: id, exp: exp })).toString("base64");
+                        h64 = buffer_1.Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64");
+                        p64 = buffer_1.Buffer.from(JSON.stringify({ id: id, exp: exp })).toString("base64");
                         msg = h64 + "." + p64;
                         return [4 /*yield*/, hmacSHA256Hex(msg, api_key)];
                     case 1:

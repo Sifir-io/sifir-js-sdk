@@ -1,5 +1,7 @@
 import _debug from "debug";
+import { Buffer } from "buffer";
 import * as _pgp from "openpgp";
+
 /// TODO move to .d.ts file
 interface SignMessageWithArmoredKeyParam {
   msg: string;

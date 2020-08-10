@@ -1,4 +1,6 @@
 import CryptoJS from "crypto-js";
+import { Buffer } from "buffer";
+//
 // import { createHmac } from "crypto";
 /**
  * Construct crypto functions needed dependig on env (Browser vs Nodde)

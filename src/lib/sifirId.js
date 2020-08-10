@@ -53,6 +53,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var pgpUtil_1 = require("./pgpUtil");
 var debug_1 = __importDefault(require("debug"));
 var superagent_1 = __importDefault(require("superagent"));
+var buffer_1 = require("buffer");
 var debug = debug_1.default("sifirutil:");
 var KeyMetaTypes = {
     keyUserAvatarImg: "keyUserAvatarImg",
@@ -86,7 +87,7 @@ var sifirId = function (_a) {
                     case 0: return [4 /*yield*/, getNonce()];
                     case 1:
                         _b = _j.sent(), nonce = _b.nonce, serverArmoredPubkeyb64 = _b.serverArmoredPubkeyb64;
-                        serverArmoredPubkey = Buffer.from(serverArmoredPubkeyb64, "base64").toString("utf8");
+                        serverArmoredPubkey = buffer_1.Buffer.from(serverArmoredPubkeyb64, "base64").toString("utf8");
                         return [4 /*yield*/, getKeyFingerprint()];
                     case 2:
                         fingerprint = _j.sent();
@@ -99,9 +100,9 @@ var sifirId = function (_a) {
                         _d = (_c = superagent_1.default.post(idServerUrl + "/auth/register/")).send;
                         _e = [__assign({}, payload)];
                         _f = {};
-                        _h = (_g = Buffer).from;
+                        _h = (_g = buffer_1.Buffer).from;
                         return [4 /*yield*/, getPubkeyArmored()];
-                    case 4: return [4 /*yield*/, _d.apply(_c, [__assign.apply(void 0, _e.concat([(_f.pubkeyArmoredb64 = _h.apply(_g, [_j.sent(), "utf8"]).toString("base64"), _f.signatureb64 = Buffer.from(armoredSignature, "utf8").toString("base64"), _f)]))])];
+                    case 4: return [4 /*yield*/, _d.apply(_c, [__assign.apply(void 0, _e.concat([(_f.pubkeyArmoredb64 = _h.apply(_g, [_j.sent(), "utf8"]).toString("base64"), _f.signatureb64 = buffer_1.Buffer.from(armoredSignature, "utf8").toString("base64"), _f)]))])];
                     case 5:
                         body = (_j.sent()).body;
                         return [2 /*return*/, body];
@@ -124,7 +125,7 @@ var sifirId = function (_a) {
                     return [4 /*yield*/, superagent_1.default.post(idServerUrl + "/keys/meta").send({
                             metaKey: metaKey,
                             metaValueb64: metaValueb64,
-                            signatureb64: Buffer.from(armoredSignature).toString("base64"),
+                            signatureb64: buffer_1.Buffer.from(armoredSignature).toString("base64"),
                             keyId: keyId
                         })];
                 case 3:
@@ -148,7 +149,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserDisplayName, Buffer.from(displayName).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserDisplayName, buffer_1.Buffer.from(displayName).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -159,7 +160,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserBio, Buffer.from(bio).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserBio, buffer_1.Buffer.from(bio).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -170,7 +171,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserWebsiteUrl, Buffer.from(siteUrl).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserWebsiteUrl, buffer_1.Buffer.from(siteUrl).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -181,7 +182,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserEmail, Buffer.from(email).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserEmail, buffer_1.Buffer.from(email).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -192,7 +193,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserTwitter, Buffer.from(twitterHandle).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserTwitter, buffer_1.Buffer.from(twitterHandle).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -214,7 +215,7 @@ var sifirId = function (_a) {
                         _b = {
                             metaId: metaId,
                             metaSignatureb64: metaSignatureb64,
-                            signatureb64: Buffer.from(armoredSignature).toString("base64")
+                            signatureb64: buffer_1.Buffer.from(armoredSignature).toString("base64")
                         };
                         return [4 /*yield*/, getKeyFingerprint()];
                     case 2:

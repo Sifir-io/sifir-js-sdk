@@ -3,6 +3,8 @@ import { EventEmitter } from "events";
 import { pgpUtil as _pgpUtil, SifirPgpUtil } from "./pgpUtil";
 import _debug from "debug";
 import agent from "superagent";
+import { Buffer } from "buffer";
+
 const debug = _debug("sifirutil:");
 // Only needed for sifir matrix service
 interface RegisterUserKeyParam {
