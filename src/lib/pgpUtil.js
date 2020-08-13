@@ -49,6 +49,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var debug_1 = __importDefault(require("debug"));
 var buffer_1 = require("buffer");
 var _pgp = __importStar(require("openpgp"));
+/// TODO move to .d.ts file
 var pgpUtil = function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.pgp, pgp = _c === void 0 ? _pgp : _c, _d = _b.debug, debug = _d === void 0 ? debug_1.default("sifir:pgputil:") : _d;
     var decryptedPrivkeyObj, pubkeyArmored;
@@ -174,14 +175,6 @@ var pgpUtil = function (_a) {
             });
         });
     };
-    //const getFingerprintFromArmoredKey = async (armoredkey: string) => {
-    //  const {
-    //    primaryKey: { fingerprint }
-    //  } = await _getPrimarykeyFromArmored(armoredkey);
-    //  return Buffer.from(fingerprint)
-    //    .toString("hex")
-    //    .toUpperCase();
-    //};
     var getKeyFingerprint = function (_a) {
         var _b = _a === void 0 ? {} : _a, _c = _b.armoredkey, armoredkey = _c === void 0 ? undefined : _c, _d = _b.encoding, encoding = _d === void 0 ? "utf8" : _d;
         return __awaiter(void 0, void 0, void 0, function () {
@@ -226,11 +219,22 @@ var pgpUtil = function (_a) {
             });
         });
     };
-    /**
-     *  @param email
-     *  @param passphrase
-     *  @returns {Promise<{pubkeyArmored:string,fingerprint:string,hexkeyId:string}>}
-     **/
+    // FIXME implement this, hasnt been used in this context but is part of interface
+    var getKeyInfo = function (armoredKey, passphrase) {
+        if (passphrase === void 0) { passphrase = ""; }
+        return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, {
+                        pubkeyArmored: "",
+                        fingerprint: "",
+                        hexkeyId: "",
+                        isPrivate: false,
+                        isLocked: false,
+                        isExpired: true
+                    }];
+            });
+        });
+    };
     return {
         // getFingerprintFromArmoredKey,
         signMessageWithArmoredKey: signMessageWithArmoredKey,
@@ -239,7 +243,8 @@ var pgpUtil = function (_a) {
         getKeyFingerprint: getKeyFingerprint,
         getPubkeyArmored: getPubkeyArmored,
         makeNewPgpKey: makeNewPgpKey,
-        initAndUnlockKeys: initAndUnlockKeys
+        initAndUnlockKeys: initAndUnlockKeys,
+        getKeyInfo: getKeyInfo
     };
 };
 exports.pgpUtil = pgpUtil;

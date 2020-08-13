@@ -21,6 +21,7 @@ var cryptoUtil_1 = require("./src/lib/cryptoUtil");
 exports.cryptoUtils = cryptoUtil_1.crypto;
 var pgpUtil_1 = require("./src/lib/pgpUtil");
 exports.pgpUtil = pgpUtil_1.pgpUtil;
-__export(require("./src/lib/types/sifirId"));
 var sifirId_1 = require("./src/lib/sifirId");
 exports.sifirId = sifirId_1.sifirId;
+// typpes
+__export(require("./src/lib/types/sifirId"));

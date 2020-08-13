@@ -1,79 +1,13 @@
 import _debug from "debug";
 import { Buffer } from "buffer";
 import * as _pgp from "openpgp";
-
+import {
+  SifirPgpUtil,
+  SignMessageWithArmoredKeyPayload,
+  SignMessageWithArmoredKeyParam,
+  EncryptMessagePayload
+} from "./types/pgpUtil";
 /// TODO move to .d.ts file
-interface SignMessageWithArmoredKeyParam {
-  msg: string;
-  privkeyArmored: string;
-  passphrase: string;
-}
-interface SignMessageWithArmoredKeyPayload {
-  armoredSignature: string;
-  message: string;
-}
-interface EncryptMessagePayload {
-  msg: string;
-  pubkey: string;
-}
-export interface SifirPgpUtil {
-  getPubkeyArmored(): string;
-  signMessageWithArmoredKey(
-    param: SignMessageWithArmoredKeyParam
-  ): Promise<SignMessageWithArmoredKeyPayload>;
-  signMessage({
-    msg
-  }: {
-    msg: string;
-  }): Promise<SignMessageWithArmoredKeyPayload>;
-  // getFingerprintFromArmoredKey(armoredkey: string): Promise<string>;
-  encryptMessage({
-    msg,
-    pubkey
-  }: EncryptMessagePayload): Promise<{
-    armoredSignature: string;
-    armoredEncryptedMsg: string;
-  }>;
-  // TODO implmement this.
-  getKeyInfo(
-    armoredKey: string,
-    passphrase?: string
-  ): Promise<{
-    pubkeyArmored: string;
-    fingerprint: string;
-    hexkeyId: string;
-    isPrivate: boolean;
-    isLocked: boolean;
-    isExpired: boolean;
-  }>;
-  getKeyFingerprint({
-    armoredkey,
-    encoding
-  }: {
-    armoredkey?: string;
-    encoding?: "hex" | "utf8";
-  }): Promise<string>;
-  makeNewPgpKey({
-    passphrase,
-    email,
-    user
-  }: {
-    passphrase: string;
-    email?: string;
-    user?: string;
-  }): Promise<{
-    privkeyArmored: string;
-    pubkeyArmored: string;
-    revocationCertificate: string;
-  }>;
-  initAndUnlockKeys({
-    privkeyArmored,
-    passphrase
-  }: {
-    privkeyArmored: string;
-    passphrase: string;
-  }): Promise<{ pubkeyArmored: string; fingerprint: string; hexkeyId: string }>;
-}
 const pgpUtil = ({
   pgp = _pgp,
   debug = _debug("sifir:pgputil:")
@@ -189,14 +123,6 @@ const pgpUtil = ({
     });
     return { armoredSignature, message: msg };
   };
-  //const getFingerprintFromArmoredKey = async (armoredkey: string) => {
-  //  const {
-  //    primaryKey: { fingerprint }
-  //  } = await _getPrimarykeyFromArmored(armoredkey);
-  //  return Buffer.from(fingerprint)
-  //    .toString("hex")
-  //    .toUpperCase();
-  //};
   const getKeyFingerprint = async ({
     armoredkey = undefined,
     encoding = "utf8"
@@ -224,12 +150,28 @@ const pgpUtil = ({
     const { data: armoredEncryptedMsg, signature: armoredSignature } = result;
     return { armoredSignature, armoredEncryptedMsg };
   };
+  // FIXME implement this, hasnt been used in this context but is part of interface
+  const getKeyInfo = async (
+    armoredKey: string,
+    passphrase = ""
+  ): Promise<{
+    pubkeyArmored: string;
+    fingerprint: string;
+    hexkeyId: string;
+    isPrivate: boolean;
+    isLocked: boolean;
+    isExpired: boolean;
+  }> => {
+    return {
+      pubkeyArmored: "",
+      fingerprint: "",
+      hexkeyId: "",
+      isPrivate: false,
+      isLocked: false,
+      isExpired: true
+    };
+  };
 
-  /**
-   *  @param email
-   *  @param passphrase
-   *  @returns {Promise<{pubkeyArmored:string,fingerprint:string,hexkeyId:string}>}
-   **/
   return {
     // getFingerprintFromArmoredKey,
     signMessageWithArmoredKey,
@@ -238,7 +180,8 @@ const pgpUtil = ({
     getKeyFingerprint,
     getPubkeyArmored,
     makeNewPgpKey,
-    initAndUnlockKeys
+    initAndUnlockKeys,
+    getKeyInfo
   };
 };
 export { pgpUtil };
