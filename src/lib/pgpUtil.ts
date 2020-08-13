@@ -171,6 +171,16 @@ const pgpUtil = ({
       isExpired: true
     };
   };
+  // FIXME implement this, hasnt been used in this context but is part of interface
+  const verifySignedMessage = async ({
+    msg,
+    armoredSignature,
+    armoredKey
+  }: {
+    msg: string;
+    armoredSignature: string;
+    armoredKey: string;
+  }) => false;
 
   return {
     // getFingerprintFromArmoredKey,
@@ -181,7 +191,8 @@ const pgpUtil = ({
     getPubkeyArmored,
     makeNewPgpKey,
     initAndUnlockKeys,
-    getKeyInfo
+    getKeyInfo,
+    verifySignedMessage
   };
 };
 export { pgpUtil };

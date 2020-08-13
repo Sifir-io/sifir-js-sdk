@@ -67,4 +67,13 @@ export interface SifirPgpUtil {
     privkeyArmored: string;
     passphrase: string;
   }): Promise<{ pubkeyArmored: string; fingerprint: string; hexkeyId: string }>;
+  verifySignedMessage({
+    msg,
+    armoredSignature,
+    armoredKey
+  }: {
+    msg: string;
+    armoredSignature: string;
+    armoredKey: string;
+  }): Promise<boolean>;
 }

@@ -235,6 +235,13 @@ var pgpUtil = function (_a) {
             });
         });
     };
+    // FIXME implement this, hasnt been used in this context but is part of interface
+    var verifySignedMessage = function (_a) {
+        var msg = _a.msg, armoredSignature = _a.armoredSignature, armoredKey = _a.armoredKey;
+        return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_b) {
+            return [2 /*return*/, false];
+        }); });
+    };
     return {
         // getFingerprintFromArmoredKey,
         signMessageWithArmoredKey: signMessageWithArmoredKey,
@@ -244,7 +251,8 @@ var pgpUtil = function (_a) {
         getPubkeyArmored: getPubkeyArmored,
         makeNewPgpKey: makeNewPgpKey,
         initAndUnlockKeys: initAndUnlockKeys,
-        getKeyInfo: getKeyInfo
+        getKeyInfo: getKeyInfo,
+        verifySignedMessage: verifySignedMessage
     };
 };
 exports.pgpUtil = pgpUtil;
