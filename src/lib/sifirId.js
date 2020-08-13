@@ -54,16 +54,10 @@ var pgpUtil_1 = require("./pgpUtil");
 var debug_1 = __importDefault(require("debug"));
 var superagent_1 = __importDefault(require("superagent"));
 var buffer_1 = require("buffer");
+var sifirId_1 = require("./types/sifirId");
 var debug = debug_1.default("sifirutil:");
-var KeyMetaTypes = {
-    keyUserAvatarImg: "keyUserAvatarImg",
-    keyUserDisplayName: "keyUserDisplayName",
-    keyUserBio: "keyUserBio",
-    keyUserWebsiteUrl: "keyUserWebsiteUrl",
-    keyUserEmail: "keyUserEmail",
-    keyUserTwitter: "keyUserTwitter"
-};
-exports.KeyMetaTypes = KeyMetaTypes;
+// Only needed for sifir matrix service
+// FIXME here export this stuff, we need it in app actions TS migraiton
 var sifirId = function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.pgpLib, pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
     var getPubkeyArmored = pgpLib.getPubkeyArmored, signMessage = pgpLib.signMessage, getKeyFingerprint = pgpLib.getKeyFingerprint;
@@ -138,7 +132,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserAvatarImg, photoBase64)];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserAvatarImg, photoBase64)];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -149,7 +143,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserDisplayName, buffer_1.Buffer.from(displayName).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserDisplayName, buffer_1.Buffer.from(displayName).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -160,7 +154,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserBio, buffer_1.Buffer.from(bio).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserBio, buffer_1.Buffer.from(bio).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -171,7 +165,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserWebsiteUrl, buffer_1.Buffer.from(siteUrl).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserWebsiteUrl, buffer_1.Buffer.from(siteUrl).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -182,7 +176,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserEmail, buffer_1.Buffer.from(email).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserEmail, buffer_1.Buffer.from(email).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];
@@ -193,7 +187,7 @@ var sifirId = function (_a) {
         var metaId;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(KeyMetaTypes.keyUserTwitter, buffer_1.Buffer.from(twitterHandle).toString("base64"))];
+                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserTwitter, buffer_1.Buffer.from(twitterHandle).toString("base64"))];
                 case 1:
                     metaId = (_a.sent()).metaId;
                     return [2 /*return*/, metaId];

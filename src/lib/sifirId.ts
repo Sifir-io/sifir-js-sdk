@@ -4,39 +4,15 @@ import { pgpUtil as _pgpUtil, SifirPgpUtil } from "./pgpUtil";
 import _debug from "debug";
 import agent from "superagent";
 import { Buffer } from "buffer";
-
+import {
+  RegisterUserKeyParam,
+  KeyMetaTypes,
+  KeyListEntry,
+  KeyAttestationPayload
+} from "./types/sifirId";
 const debug = _debug("sifirutil:");
 // Only needed for sifir matrix service
-interface RegisterUserKeyParam {
-  user: string;
-}
-interface Attestation {
-  attestingKeyFingerprint: string;
-  attestationSigbb64: string;
-}
-interface KeyAttestation {
-  metaId: string;
-  metaValueb64: string;
-  metaSignature64: string;
-  attestations: [Attestation];
-}
-interface KeyAttestationsPayload {
-  fingerprint: string;
-  metaDict: { [keyId: string]: KeyAttestation };
-}
-interface KeyInfoPayload {
-  user: string;
-  fingerprint: string;
-  armoredPub64: string;
-}
-const KeyMetaTypes = {
-  keyUserAvatarImg: "keyUserAvatarImg",
-  keyUserDisplayName: "keyUserDisplayName",
-  keyUserBio: "keyUserBio",
-  keyUserWebsiteUrl: "keyUserWebsiteUrl",
-  keyUserEmail: "keyUserEmail",
-  keyUserTwitter: "keyUserTwitter"
-};
+// FIXME here export this stuff, we need it in app actions TS migraiton
 const sifirId = ({
   pgpLib = _pgpUtil(),
   idServerUrl = "https://pairing.sifir.io"
@@ -169,10 +145,7 @@ const sifirId = ({
   };
   const getKeyAttestations = async (
     keyId: string
-  ): Promise<{
-    keyMetaInfo: KeyAttestationsPayload;
-    keyInfo: KeyInfoPayload;
-  }> => {
+  ): Promise<KeyAttestationPayload> => {
     const { body } = await agent.get(`${idServerUrl}/keys/${keyId}`);
     const { keyMetaInfo, keyInfo } = body;
     return { keyMetaInfo, keyInfo };
@@ -185,18 +158,7 @@ const sifirId = ({
     limit?: number;
     offset?: number;
     user?: string;
-  }): Promise<
-    [
-      {
-        user: string;
-        fingerprint: string;
-        keyUserAvatarImgValueb64: string;
-        keyUserDisplayNameValueb64: string;
-        inboundKeyMetaAttestationCount: number;
-        outBoundKeyMetaAttestationCount: number;
-      }
-    ]
-  > => {
+  }): Promise<[KeyListEntry]> => {
     const {
       body: { keys }
     } = await agent.get(`${idServerUrl}/keys`).query({ limit, offset, user });
@@ -216,4 +178,4 @@ const sifirId = ({
     getKeyAttestations
   };
 };
-export { sifirId, KeyMetaTypes };
+export { sifirId };
