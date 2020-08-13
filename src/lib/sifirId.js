@@ -255,6 +255,7 @@ var sifirId = function (_a) {
         signAndUploadKeyAvatar: signAndUploadKeyAvatar,
         signAndUploadKeyDisplayName: signAndUploadKeyDisplayName,
         signMetaAttestation: signMetaAttestation,
+        signAndUploadKeyMeta: signAndUploadKeyMeta,
         signAndUploadKeyBio: signAndUploadKeyBio,
         signAndUploadKeyWebsiteURL: signAndUploadKeyWebsiteURL,
         signAndUploadKeyEmail: signAndUploadKeyEmail,

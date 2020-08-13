@@ -172,6 +172,7 @@ const sifirId = ({
     signAndUploadKeyAvatar,
     signAndUploadKeyDisplayName,
     signMetaAttestation,
+    signAndUploadKeyMeta,
     signAndUploadKeyBio,
     signAndUploadKeyWebsiteURL,
     signAndUploadKeyEmail,
