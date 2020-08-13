@@ -1,4 +1,7 @@
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 var btcClient_1 = require("./src/clients/btcClient");
 exports.btcClient = btcClient_1.client;
@@ -18,7 +21,6 @@ var cryptoUtil_1 = require("./src/lib/cryptoUtil");
 exports.cryptoUtils = cryptoUtil_1.crypto;
 var pgpUtil_1 = require("./src/lib/pgpUtil");
 exports.pgpUtil = pgpUtil_1.pgpUtil;
-var sifirId_1 = require("./src/lib/types/sifirId");
-exports.KeyMetaTypes = sifirId_1.KeyMetaTypes;
-var sifirId_2 = require("./src/lib/sifirId");
-exports.sifirId = sifirId_2.sifirId;
+__export(require("./src/lib/types/sifirId"));
+var sifirId_1 = require("./src/lib/sifirId");
+exports.sifirId = sifirId_1.sifirId;

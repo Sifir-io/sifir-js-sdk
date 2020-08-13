@@ -9,5 +9,5 @@ export {
 } from "./src/transport/cypherNodeHttpTransport";
 export { crypto as cryptoUtils } from "./src/lib/cryptoUtil";
 export { pgpUtil } from "./src/lib/pgpUtil";
-export { KeyMetaTypes, KeyListEntry } from "./src/lib/types/sifirId";
+export * from "./src/lib/types/sifirId";
 export { sifirId } from "./src/lib/sifirId";
