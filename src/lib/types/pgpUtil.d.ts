@@ -76,4 +76,5 @@ export interface SifirPgpUtil {
     armoredSignature: string;
     armoredKey: string;
   }): Promise<boolean>;
+  decryptMessage(msg: string): Promise<string>;
 }
