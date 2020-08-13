@@ -56,8 +56,6 @@ var superagent_1 = __importDefault(require("superagent"));
 var buffer_1 = require("buffer");
 var sifirId_1 = require("./types/sifirId");
 var debug = debug_1.default("sifirutil:");
-// Only needed for sifir matrix service
-// FIXME here export this stuff, we need it in app actions TS migraiton
 var sifirId = function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.pgpLib, pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
     var getPubkeyArmored = pgpLib.getPubkeyArmored, signMessage = pgpLib.signMessage, getKeyFingerprint = pgpLib.getKeyFingerprint;

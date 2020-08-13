@@ -8,15 +8,15 @@ import {
   RegisterUserKeyParam,
   KeyMetaTypes,
   KeyListEntry,
-  KeyAttestationPayload
+  KeyAttestationPayload,
+  RegisterKeyPayload,
+  SifirIDLib
 } from "./types/sifirId";
 const debug = _debug("sifirutil:");
-// Only needed for sifir matrix service
-// FIXME here export this stuff, we need it in app actions TS migraiton
 const sifirId = ({
   pgpLib = _pgpUtil(),
   idServerUrl = "https://pairing.sifir.io"
-} = {}) => {
+} = {}): SifirIDLib => {
   const { getPubkeyArmored, signMessage, getKeyFingerprint } = pgpLib;
   const getNonce = async () => {
     const {
@@ -24,7 +24,9 @@ const sifirId = ({
     } = await agent.get(`${idServerUrl}/auth/`);
     return { nonce, serverArmoredPubkeyb64 };
   };
-  const registerUserKey = async ({ user }: RegisterUserKeyParam) => {
+  const registerUserKey = async ({
+    user
+  }: RegisterUserKeyParam): Promise<RegisterKeyPayload> => {
     // Request user from id server
     // get nonce
     const { nonce, serverArmoredPubkeyb64 } = await getNonce();
