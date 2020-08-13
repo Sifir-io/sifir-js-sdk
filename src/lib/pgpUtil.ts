@@ -181,6 +181,10 @@ const pgpUtil = ({
     armoredSignature: string;
     armoredKey: string;
   }) => false;
+  // FIXME implement this, hasnt been used in this context but is part of interface
+  const decryptMessage = async (msg: string) => {
+    return "FIXME IMPLMENET THIS";
+  };
 
   return {
     // getFingerprintFromArmoredKey,
@@ -192,7 +196,8 @@ const pgpUtil = ({
     makeNewPgpKey,
     initAndUnlockKeys,
     getKeyInfo,
-    verifySignedMessage
+    verifySignedMessage,
+    decryptMessage
   };
 };
 export { pgpUtil };
