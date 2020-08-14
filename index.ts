@@ -11,5 +11,5 @@ export { crypto as cryptoUtils } from "./src/lib/cryptoUtil";
 export { pgpUtil } from "./src/lib/pgpUtil";
 export { sifirId } from "./src/lib/sifirId";
 // typpes
-export * from "./src/lib/types/sifirId.d";
-export * from "./src/lib/types/pgpUtil.d";
+export * from "./src/lib/types/sifirId";
+export * from "./src/lib/types/pgpUtil";

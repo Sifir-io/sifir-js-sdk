@@ -24,4 +24,4 @@ exports.pgpUtil = pgpUtil_1.pgpUtil;
 var sifirId_1 = require("./src/lib/sifirId");
 exports.sifirId = sifirId_1.sifirId;
 // typpes
-__export(require("./src/lib/types/sifirId.d"));
+__export(require("./src/lib/types/sifirId"));
