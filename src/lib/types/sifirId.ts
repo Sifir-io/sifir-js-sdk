@@ -3,12 +3,12 @@ export interface RegisterUserKeyParam {
 }
 export interface Attestation {
   attestingKeyFingerprint: string;
-  attestationSigbb64: string;
+  attestationSigb64: string;
 }
 export interface KeyAttestation {
   metaId: string;
   metaValueb64: string;
-  metaSignature64: string;
+  metaSignatureb64: string;
   attestations: Attestation[];
 }
 export interface KeyAttestationsPayload {
