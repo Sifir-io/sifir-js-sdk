@@ -1,6 +1,6 @@
 import uuid from "uuid/v4";
 import { EventEmitter } from "events";
-import { pgpUtil as _pgpUtil, SifirPgpUtil } from "./pgpUtil";
+import { pgpUtil as _pgpUtil } from "./pgpUtil";
 import _debug from "debug";
 import agent from "superagent";
 import { Buffer } from "buffer";
@@ -129,7 +129,7 @@ const sifirId = ({
     metaId: string;
     metaValueb64: string;
     metaSignatureb64: string;
-    attestations: [string];
+    attestations: string[];
   }): Promise<number> => {
     const { armoredSignature } = await signMessage({
       msg: metaSignatureb64
@@ -160,7 +160,7 @@ const sifirId = ({
     limit?: number;
     offset?: number;
     user?: string;
-  }): Promise<[KeyListEntry]> => {
+  }): Promise<KeyListEntry[]> => {
     const {
       body: { keys }
     } = await agent.get(`${idServerUrl}/keys`).query({ limit, offset, user });

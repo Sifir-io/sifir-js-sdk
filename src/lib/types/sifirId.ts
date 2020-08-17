@@ -9,7 +9,7 @@ export interface KeyAttestation {
   metaId: string;
   metaValueb64: string;
   metaSignature64: string;
-  attestations: [Attestation];
+  attestations: Attestation[];
 }
 export interface KeyAttestationsPayload {
   fingerprint: string;
@@ -69,7 +69,7 @@ export interface SifirIDLib {
     metaId: string;
     metaValueb64: string;
     metaSignatureb64: string;
-    attestations: [string];
+    attestations: string[];
   }) => Promise<number>;
   getKeyAttestations: (keyId: string) => Promise<KeyAttestationPayload>;
   getKeyList: ({
@@ -80,5 +80,5 @@ export interface SifirIDLib {
     limit?: number;
     offset?: number;
     user?: string;
-  }) => Promise<[KeyListEntry]>;
+  }) => Promise<KeyListEntry[]>;
 }
