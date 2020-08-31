@@ -8,4 +8,5 @@ var KeyMetaTypes;
     KeyMetaTypes["keyUserWebsiteUrl"] = "keyUserWebsiteUrl";
     KeyMetaTypes["keyUserEmail"] = "keyUserEmail";
     KeyMetaTypes["keyUserTwitter"] = "keyUserTwitter";
+    KeyMetaTypes["keyUserFollow"] = "keyUserFollow";
 })(KeyMetaTypes = exports.KeyMetaTypes || (exports.KeyMetaTypes = {}));

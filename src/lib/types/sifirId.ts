@@ -1,5 +1,6 @@
 export interface RegisterUserKeyParam {
   user: string;
+  setFollowMeta?: boolean;
 }
 export interface Attestation {
   attestingKeyFingerprint: string;
@@ -34,7 +35,8 @@ export enum KeyMetaTypes {
   keyUserBio = "keyUserBio",
   keyUserWebsiteUrl = "keyUserWebsiteUrl",
   keyUserEmail = "keyUserEmail",
-  keyUserTwitter = "keyUserTwitter"
+  keyUserTwitter = "keyUserTwitter",
+  keyUserFollow = "keyUserFollow"
 }
 export interface KeyAttestationPayload {
   keyMetaInfo: KeyAttestationsPayload;

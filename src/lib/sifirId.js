@@ -71,33 +71,38 @@ var sifirId = function (_a) {
         });
     }); };
     var registerUserKey = function (_a) {
-        var user = _a.user;
+        var user = _a.user, _b = _a.setFollowMeta, setFollowMeta = _b === void 0 ? true : _b;
         return __awaiter(void 0, void 0, void 0, function () {
-            var _b, nonce, serverArmoredPubkeyb64, serverArmoredPubkey, fingerprint, payload, armoredSignature, body, _c, _d, _e, _f, _g, _h;
-            return __generator(this, function (_j) {
-                switch (_j.label) {
+            var _c, nonce, serverArmoredPubkeyb64, serverArmoredPubkey, fingerprint, payload, armoredSignature, body, _d, _e, _f, _g, _h, _j;
+            return __generator(this, function (_k) {
+                switch (_k.label) {
                     case 0: return [4 /*yield*/, getNonce()];
                     case 1:
-                        _b = _j.sent(), nonce = _b.nonce, serverArmoredPubkeyb64 = _b.serverArmoredPubkeyb64;
+                        _c = _k.sent(), nonce = _c.nonce, serverArmoredPubkeyb64 = _c.serverArmoredPubkeyb64;
                         serverArmoredPubkey = buffer_1.Buffer.from(serverArmoredPubkeyb64, "base64").toString("utf8");
                         return [4 /*yield*/, getKeyFingerprint()];
                     case 2:
-                        fingerprint = _j.sent();
+                        fingerprint = _k.sent();
                         payload = { nonce: nonce, username: user, keyId: fingerprint };
                         return [4 /*yield*/, signMessage({
                                 msg: JSON.stringify(payload)
                             })];
                     case 3:
-                        armoredSignature = (_j.sent()).armoredSignature;
-                        _d = (_c = superagent_1.default.post(idServerUrl + "/auth/register/")).send;
-                        _e = [__assign({}, payload)];
-                        _f = {};
-                        _h = (_g = buffer_1.Buffer).from;
+                        armoredSignature = (_k.sent()).armoredSignature;
+                        _e = (_d = superagent_1.default.post(idServerUrl + "/auth/register/")).send;
+                        _f = [__assign({}, payload)];
+                        _g = {};
+                        _j = (_h = buffer_1.Buffer).from;
                         return [4 /*yield*/, getPubkeyArmored()];
-                    case 4: return [4 /*yield*/, _d.apply(_c, [__assign.apply(void 0, _e.concat([(_f.pubkeyArmoredb64 = _h.apply(_g, [_j.sent(), "utf8"]).toString("base64"), _f.signatureb64 = buffer_1.Buffer.from(armoredSignature, "utf8").toString("base64"), _f)]))])];
+                    case 4: return [4 /*yield*/, _e.apply(_d, [__assign.apply(void 0, _f.concat([(_g.pubkeyArmoredb64 = _j.apply(_h, [_k.sent(), "utf8"]).toString("base64"), _g.signatureb64 = buffer_1.Buffer.from(armoredSignature, "utf8").toString("base64"), _g)]))])];
                     case 5:
-                        body = (_j.sent()).body;
-                        return [2 /*return*/, body];
+                        body = (_k.sent()).body;
+                        if (!setFollowMeta) return [3 /*break*/, 7];
+                        return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserFollow, buffer_1.Buffer.from(fingerprint).toString("base64"))];
+                    case 6:
+                        _k.sent();
+                        _k.label = 7;
+                    case 7: return [2 /*return*/, body];
                 }
             });
         });

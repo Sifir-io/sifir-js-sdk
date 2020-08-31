@@ -25,7 +25,8 @@ const sifirId = ({
     return { nonce, serverArmoredPubkeyb64 };
   };
   const registerUserKey = async ({
-    user
+    user,
+    setFollowMeta = true
   }: RegisterUserKeyParam): Promise<RegisterKeyPayload> => {
     // Request user from id server
     // get nonce
@@ -50,11 +51,19 @@ const sifirId = ({
       ),
       signatureb64: Buffer.from(armoredSignature, "utf8").toString("base64")
     });
+
+    // Set the follow meta tag
+    if (setFollowMeta) {
+      await signAndUploadKeyMeta(
+        KeyMetaTypes.keyUserFollow,
+        Buffer.from(fingerprint).toString("base64")
+      );
+    }
     return body;
   };
 
   const signAndUploadKeyMeta = async (
-    metaKey: string,
+    metaKey: KeyMetaTypes,
     metaValueb64: string
   ) => {
     const keyId = await getKeyFingerprint();
