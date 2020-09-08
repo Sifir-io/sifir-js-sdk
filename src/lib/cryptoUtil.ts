@@ -61,9 +61,12 @@ export const crypto = () => {
     return `${msg}.${hash}`;
   };
   /**
-   * Returns a Hex encoded sha256 of the provided string
+   * Returns a Hex encoded sha256 of the provided Buffer
    * */
-  const sha256 = (text: string): string =>
-    CryptoJS.SHA256(text).toString(CryptoJS.enc.Hex);
+  const sha256 = (buffer: Buffer): string => {
+    return CryptoJS.SHA256(CryptoJS.lib.WordArray.create(buffer)).toString(
+      CryptoJS.enc.Hex
+    );
+  };
   return { hmacSHA256Hex, makeToken, sha256, CryptoJS };
 };

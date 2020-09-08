@@ -37,5 +37,5 @@ test("Sha256 should hash correctly", async t => {
   const bashSha256Sum =
     "672712a7266b213818895feba751c9c90ff37ff8f7ce35d7b359afa9fe16c082";
   const { sha256 } = crypto();
-  t.is(sha256(stringToHash), bashSha256Sum);
+  t.is(sha256(Buffer.from(stringToHash)), bashSha256Sum);
 });
