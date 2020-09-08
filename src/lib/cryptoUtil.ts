@@ -60,5 +60,10 @@ export const crypto = () => {
     const hash = await hmacSHA256Hex(msg, api_key);
     return `${msg}.${hash}`;
   };
-  return { hmacSHA256Hex, makeToken };
+  /** 
+   * Returns a base64 encoded sha256 of the provided string 
+   * */
+  const sha256 = (text: string): string =>
+    CryptoJS.SHA256(text).toString(CryptoJS.enc.Base64);
+  return { hmacSHA256Hex, makeToken, sha256 };
 };
