@@ -12,7 +12,8 @@ import {
   RegisterKeyPayload,
   SifirIDLib,
   LinkedMeta,
-  ContentMeta
+  ContentMeta,
+  UploadKeyMetaTypePayloadMap
 } from "./types/sifirId";
 const debug = _debug("sifirutil:");
 const sifirId = ({
@@ -66,12 +67,11 @@ const sifirId = ({
     }
     return body;
   };
-
   /** @TODO For now onus is on caller to provide Block + Md5 of link , will pprobably refactor this */
-  const signAndUploadKeyMeta = async (
-    metaKey: KeyMetaTypes,
-    metaPayload: LinkedMeta | ContentMeta
-  ) => {
+  const signAndUploadKeyMeta = async <T extends KeyMetaTypes>(
+    metaKey: T,
+    metaPayload: UploadKeyMetaTypePayloadMap[T]
+  ): Promise<any> => {
     const keyId = await getKeyFingerprint();
     const metaValueb64 = Buffer.from(JSON.stringify(metaPayload)).toString(
       "base64"

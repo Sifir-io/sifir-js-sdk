@@ -59,6 +59,16 @@ export interface LinkedMeta extends MetaBase {
 export interface ContentMeta extends MetaBase {
   type: "content";
 }
+export interface UploadKeyMetaTypePayloadMap {
+  [KeyMetaTypes.keyUserAvatarImg]: LinkedMeta;
+  [KeyMetaTypes.keyUserDisplayName]: ContentMeta;
+  [KeyMetaTypes.keyUserBio]: ContentMeta;
+  [KeyMetaTypes.keyUserWebsiteUrl]: ContentMeta;
+  [KeyMetaTypes.keyUserEmail]: ContentMeta;
+  [KeyMetaTypes.keyUserTwitter]: ContentMeta;
+  [KeyMetaTypes.keyUserFollow]: ContentMeta;
+}
+
 export interface SifirIDLib {
   getNonce: () => Promise<{ nonce: string; serverArmoredPubkeyb64: string }>;
   registerUserKey: ({
