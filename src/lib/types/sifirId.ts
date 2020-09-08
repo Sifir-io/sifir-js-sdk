@@ -74,10 +74,10 @@ export interface SifirIDLib {
   registerUserKey: ({
     user
   }: RegisterUserKeyParam) => Promise<RegisterKeyPayload>;
-  signAndUploadKeyMeta: (
-    metaKey: KeyMetaTypes,
-    metaPayload: LinkedMeta | ContentMeta
-  ) => Promise<any>;
+  signAndUploadKeyMeta<T extends KeyMetaTypes>(
+    metaKey: T,
+    metaPayload: UploadKeyMetaTypePayloadMap[T]
+  ): Promise<any>;
   signMetaAttestation: ({
     metaId,
     metaValueb64,
