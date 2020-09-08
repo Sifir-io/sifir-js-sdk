@@ -117,10 +117,10 @@ exports.crypto = function () {
         });
     };
     /**
-     * Returns a base64 encoded sha256 of the provided string
+     * Returns a Hex encoded sha256 of the provided string
      * */
     var sha256 = function (text) {
-        return crypto_js_1.default.SHA256(text).toString(crypto_js_1.default.enc.Base64);
+        return crypto_js_1.default.SHA256(text).toString(crypto_js_1.default.enc.Hex);
     };
     return { hmacSHA256Hex: hmacSHA256Hex, makeToken: makeToken, sha256: sha256 };
 };
