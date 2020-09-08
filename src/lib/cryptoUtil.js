@@ -122,5 +122,5 @@ exports.crypto = function () {
     var sha256 = function (text) {
         return crypto_js_1.default.SHA256(text).toString(crypto_js_1.default.enc.Hex);
     };
-    return { hmacSHA256Hex: hmacSHA256Hex, makeToken: makeToken, sha256: sha256 };
+    return { hmacSHA256Hex: hmacSHA256Hex, makeToken: makeToken, sha256: sha256, CryptoJS: crypto_js_1.default };
 };

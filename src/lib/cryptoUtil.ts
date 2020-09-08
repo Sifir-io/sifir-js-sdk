@@ -65,5 +65,5 @@ export const crypto = () => {
    * */
   const sha256 = (text: string): string =>
     CryptoJS.SHA256(text).toString(CryptoJS.enc.Hex);
-  return { hmacSHA256Hex, makeToken, sha256 };
+  return { hmacSHA256Hex, makeToken, sha256, CryptoJS };
 };
