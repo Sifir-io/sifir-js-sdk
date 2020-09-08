@@ -10,10 +10,13 @@ import {
   KeyListEntry,
   KeyAttestationPayload,
   RegisterKeyPayload,
-  SifirIDLib
+  SifirIDLib,
+  LinkedMeta,
+  ContentMeta
 } from "./types/sifirId";
 const debug = _debug("sifirutil:");
 const sifirId = ({
+  // TODO accept a btcUtil that getLatestBlock -> btcClient ?
   pgpLib = _pgpUtil(),
   idServerUrl = "https://pairing.sifir.io"
 } = {}): SifirIDLib => {
@@ -26,6 +29,7 @@ const sifirId = ({
   };
   const registerUserKey = async ({
     user,
+    block,
     setFollowMeta = true
   }: RegisterUserKeyParam): Promise<RegisterKeyPayload> => {
     // Request user from id server
@@ -54,19 +58,24 @@ const sifirId = ({
 
     // Set the follow meta tag
     if (setFollowMeta) {
-      await signAndUploadKeyMeta(
-        KeyMetaTypes.keyUserFollow,
-        Buffer.from(fingerprint).toString("base64")
-      );
+      await signAndUploadKeyMeta(KeyMetaTypes.keyUserFollow, {
+        value: fingerprint,
+        type: "content",
+        block: block ? block : undefined
+      });
     }
     return body;
   };
 
+  /** @TODO For now onus is on caller to provide Block + Md5 of link , will pprobably refactor this */
   const signAndUploadKeyMeta = async (
     metaKey: KeyMetaTypes,
-    metaValueb64: string
+    metaPayload: LinkedMeta | ContentMeta
   ) => {
     const keyId = await getKeyFingerprint();
+    const metaValueb64 = Buffer.from(JSON.stringify(metaPayload)).toString(
+      "base64"
+    );
     const { armoredSignature } = await signMessage({
       msg: metaValueb64
     });
@@ -78,32 +87,43 @@ const sifirId = ({
     });
     return body;
   };
+  /**
+   * @deprecated
+   * use signAndUploadKeyMeta directly
   const signAndUploadKeyAvatar = async (
     photoBase64: string
   ): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
       KeyMetaTypes.keyUserAvatarImg,
-      photoBase64
+      { type: "url", value: "FIXME URLphotoBase64", sha256: "" }
     );
     return metaId;
   };
+  /**
+   * @deprecated
+   * use signAndUploadKeyMeta directly
   const signAndUploadKeyDisplayName = async (
     displayName: string
   ): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
       KeyMetaTypes.keyUserDisplayName,
-      Buffer.from(displayName).toString("base64")
+      { type: "content", value: displayName }
     );
     return metaId;
   };
+  /**
+   * @deprecated
   const signAndUploadKeyBio = async (bio: string): Promise<number> => {
-    const { metaId } = await signAndUploadKeyMeta(
-      KeyMetaTypes.keyUserBio,
-      Buffer.from(bio).toString("base64")
-    );
+    const { metaId } = await signAndUploadKeyMeta(KeyMetaTypes.keyUserBio, {
+      type: "content",
+      value: bio
+    });
     return metaId;
   };
-
+  //FIXME replace all these functions with signAndUploadLinkedMeta , and signAndUploadMetaContent
+  /**
+   * @deprecated
+   * use signAndUploadKeyMeta directly
   const signAndUploadKeyWebsiteURL = async (
     siteUrl: string
   ): Promise<number> => {
@@ -113,6 +133,9 @@ const sifirId = ({
     );
     return metaId;
   };
+  /**
+   * @deprecated
+   * use signAndUploadKeyMeta directly
   const signAndUploadKeyEmail = async (email: string): Promise<number> => {
     const { metaId } = await signAndUploadKeyMeta(
       KeyMetaTypes.keyUserEmail,
@@ -120,6 +143,9 @@ const sifirId = ({
     );
     return metaId;
   };
+  /**
+   * @deprecated
+   * use signAndUploadKeyMeta directly
   const signAndUploadKeyTwitter = async (
     twitterHandle: string
   ): Promise<number> => {
@@ -129,6 +155,7 @@ const sifirId = ({
     );
     return metaId;
   };
+  */
   const signMetaAttestation = async ({
     metaId,
     metaValueb64,
@@ -176,16 +203,10 @@ const sifirId = ({
     return keys;
   };
   return {
+    signAndUploadKeyMeta,
     registerUserKey,
     getNonce,
-    signAndUploadKeyAvatar,
-    signAndUploadKeyDisplayName,
     signMetaAttestation,
-    signAndUploadKeyMeta,
-    signAndUploadKeyBio,
-    signAndUploadKeyWebsiteURL,
-    signAndUploadKeyEmail,
-    signAndUploadKeyTwitter,
     getKeyList,
     getKeyAttestations
   };

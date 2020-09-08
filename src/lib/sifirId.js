@@ -57,7 +57,11 @@ var buffer_1 = require("buffer");
 var sifirId_1 = require("./types/sifirId");
 var debug = debug_1.default("sifirutil:");
 var sifirId = function (_a) {
-    var _b = _a === void 0 ? {} : _a, _c = _b.pgpLib, pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
+    var _b = _a === void 0 ? {} : _a, 
+    // TODO accept a btcUtil that getLatestBlock -> btcClient ?
+    _c = _b.pgpLib, 
+    // TODO accept a btcUtil that getLatestBlock -> btcClient ?
+    pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
     var getPubkeyArmored = pgpLib.getPubkeyArmored, signMessage = pgpLib.signMessage, getKeyFingerprint = pgpLib.getKeyFingerprint;
     var getNonce = function () { return __awaiter(void 0, void 0, void 0, function () {
         var _a, serverArmoredPubkeyb64, nonce;
@@ -71,7 +75,7 @@ var sifirId = function (_a) {
         });
     }); };
     var registerUserKey = function (_a) {
-        var user = _a.user, _b = _a.setFollowMeta, setFollowMeta = _b === void 0 ? true : _b;
+        var user = _a.user, block = _a.block, _b = _a.setFollowMeta, setFollowMeta = _b === void 0 ? true : _b;
         return __awaiter(void 0, void 0, void 0, function () {
             var _c, nonce, serverArmoredPubkeyb64, serverArmoredPubkey, fingerprint, payload, armoredSignature, body, _d, _e, _f, _g, _h, _j;
             return __generator(this, function (_k) {
@@ -98,7 +102,11 @@ var sifirId = function (_a) {
                     case 5:
                         body = (_k.sent()).body;
                         if (!setFollowMeta) return [3 /*break*/, 7];
-                        return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserFollow, buffer_1.Buffer.from(fingerprint).toString("base64"))];
+                        return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserFollow, {
+                                value: fingerprint,
+                                type: "content",
+                                block: block ? block : undefined
+                            })];
                     case 6:
                         _k.sent();
                         _k.label = 7;
@@ -107,13 +115,15 @@ var sifirId = function (_a) {
             });
         });
     };
-    var signAndUploadKeyMeta = function (metaKey, metaValueb64) { return __awaiter(void 0, void 0, void 0, function () {
-        var keyId, armoredSignature, body;
+    /** @TODO For now onus is on caller to provide Block + Md5 of link , will pprobably refactor this */
+    var signAndUploadKeyMeta = function (metaKey, metaPayload) { return __awaiter(void 0, void 0, void 0, function () {
+        var keyId, metaValueb64, armoredSignature, body;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getKeyFingerprint()];
                 case 1:
                     keyId = _a.sent();
+                    metaValueb64 = buffer_1.Buffer.from(JSON.stringify(metaPayload)).toString("base64");
                     return [4 /*yield*/, signMessage({
                             msg: metaValueb64
                         })];
@@ -131,72 +141,75 @@ var sifirId = function (_a) {
             }
         });
     }); };
-    var signAndUploadKeyAvatar = function (photoBase64) { return __awaiter(void 0, void 0, void 0, function () {
-        var metaId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserAvatarImg, photoBase64)];
-                case 1:
-                    metaId = (_a.sent()).metaId;
-                    return [2 /*return*/, metaId];
-            }
-        });
-    }); };
-    var signAndUploadKeyDisplayName = function (displayName) { return __awaiter(void 0, void 0, void 0, function () {
-        var metaId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserDisplayName, buffer_1.Buffer.from(displayName).toString("base64"))];
-                case 1:
-                    metaId = (_a.sent()).metaId;
-                    return [2 /*return*/, metaId];
-            }
-        });
-    }); };
-    var signAndUploadKeyBio = function (bio) { return __awaiter(void 0, void 0, void 0, function () {
-        var metaId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserBio, buffer_1.Buffer.from(bio).toString("base64"))];
-                case 1:
-                    metaId = (_a.sent()).metaId;
-                    return [2 /*return*/, metaId];
-            }
-        });
-    }); };
-    var signAndUploadKeyWebsiteURL = function (siteUrl) { return __awaiter(void 0, void 0, void 0, function () {
-        var metaId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserWebsiteUrl, buffer_1.Buffer.from(siteUrl).toString("base64"))];
-                case 1:
-                    metaId = (_a.sent()).metaId;
-                    return [2 /*return*/, metaId];
-            }
-        });
-    }); };
-    var signAndUploadKeyEmail = function (email) { return __awaiter(void 0, void 0, void 0, function () {
-        var metaId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserEmail, buffer_1.Buffer.from(email).toString("base64"))];
-                case 1:
-                    metaId = (_a.sent()).metaId;
-                    return [2 /*return*/, metaId];
-            }
-        });
-    }); };
-    var signAndUploadKeyTwitter = function (twitterHandle) { return __awaiter(void 0, void 0, void 0, function () {
-        var metaId;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, signAndUploadKeyMeta(sifirId_1.KeyMetaTypes.keyUserTwitter, buffer_1.Buffer.from(twitterHandle).toString("base64"))];
-                case 1:
-                    metaId = (_a.sent()).metaId;
-                    return [2 /*return*/, metaId];
-            }
-        });
-    }); };
+    /**
+     * @deprecated
+     * use signAndUploadKeyMeta directly
+    const signAndUploadKeyAvatar = async (
+      photoBase64: string
+    ): Promise<number> => {
+      const { metaId } = await signAndUploadKeyMeta(
+        KeyMetaTypes.keyUserAvatarImg,
+        { type: "url", value: "FIXME URLphotoBase64", sha256: "" }
+      );
+      return metaId;
+    };
+    /**
+     * @deprecated
+     * use signAndUploadKeyMeta directly
+    const signAndUploadKeyDisplayName = async (
+      displayName: string
+    ): Promise<number> => {
+      const { metaId } = await signAndUploadKeyMeta(
+        KeyMetaTypes.keyUserDisplayName,
+        { type: "content", value: displayName }
+      );
+      return metaId;
+    };
+    /**
+     * @deprecated
+    const signAndUploadKeyBio = async (bio: string): Promise<number> => {
+      const { metaId } = await signAndUploadKeyMeta(KeyMetaTypes.keyUserBio, {
+        type: "content",
+        value: bio
+      });
+      return metaId;
+    };
+    //FIXME replace all these functions with signAndUploadLinkedMeta , and signAndUploadMetaContent
+    /**
+     * @deprecated
+     * use signAndUploadKeyMeta directly
+    const signAndUploadKeyWebsiteURL = async (
+      siteUrl: string
+    ): Promise<number> => {
+      const { metaId } = await signAndUploadKeyMeta(
+        KeyMetaTypes.keyUserWebsiteUrl,
+        Buffer.from(siteUrl).toString("base64")
+      );
+      return metaId;
+    };
+    /**
+     * @deprecated
+     * use signAndUploadKeyMeta directly
+    const signAndUploadKeyEmail = async (email: string): Promise<number> => {
+      const { metaId } = await signAndUploadKeyMeta(
+        KeyMetaTypes.keyUserEmail,
+        Buffer.from(email).toString("base64")
+      );
+      return metaId;
+    };
+    /**
+     * @deprecated
+     * use signAndUploadKeyMeta directly
+    const signAndUploadKeyTwitter = async (
+      twitterHandle: string
+    ): Promise<number> => {
+      const { metaId } = await signAndUploadKeyMeta(
+        KeyMetaTypes.keyUserTwitter,
+        Buffer.from(twitterHandle).toString("base64")
+      );
+      return metaId;
+    };
+    */
     var signMetaAttestation = function (_a) {
         var metaId = _a.metaId, metaValueb64 = _a.metaValueb64, metaSignatureb64 = _a.metaSignatureb64, attestations = _a.attestations // FIXME ... do we sign this
         ;
@@ -255,16 +268,10 @@ var sifirId = function (_a) {
         });
     };
     return {
+        signAndUploadKeyMeta: signAndUploadKeyMeta,
         registerUserKey: registerUserKey,
         getNonce: getNonce,
-        signAndUploadKeyAvatar: signAndUploadKeyAvatar,
-        signAndUploadKeyDisplayName: signAndUploadKeyDisplayName,
         signMetaAttestation: signMetaAttestation,
-        signAndUploadKeyMeta: signAndUploadKeyMeta,
-        signAndUploadKeyBio: signAndUploadKeyBio,
-        signAndUploadKeyWebsiteURL: signAndUploadKeyWebsiteURL,
-        signAndUploadKeyEmail: signAndUploadKeyEmail,
-        signAndUploadKeyTwitter: signAndUploadKeyTwitter,
         getKeyList: getKeyList,
         getKeyAttestations: getKeyAttestations
     };

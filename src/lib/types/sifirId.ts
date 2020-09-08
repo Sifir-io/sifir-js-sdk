@@ -1,6 +1,7 @@
 export interface RegisterUserKeyParam {
   user: string;
   setFollowMeta?: boolean;
+  block?: string;
 }
 export interface Attestation {
   attestingKeyFingerprint: string;
@@ -47,21 +48,26 @@ export interface RegisterKeyPayload {
   username: string;
   fingerprint: string;
 }
+export interface MetaBase {
+  value: string;
+  block?: string;
+}
+export interface LinkedMeta extends MetaBase {
+  type: "url";
+  sha256: string;
+}
+export interface ContentMeta extends MetaBase {
+  type: "content";
+}
 export interface SifirIDLib {
   getNonce: () => Promise<{ nonce: string; serverArmoredPubkeyb64: string }>;
   registerUserKey: ({
     user
   }: RegisterUserKeyParam) => Promise<RegisterKeyPayload>;
   signAndUploadKeyMeta: (
-    metaKey: string,
-    metaValueb64: string
-  ) => Promise<number>;
-  signAndUploadKeyAvatar: (photoBase64: string) => Promise<number>;
-  signAndUploadKeyDisplayName: (displayName: string) => Promise<number>;
-  signAndUploadKeyBio: (bio: string) => Promise<number>;
-  signAndUploadKeyWebsiteURL: (siteUrl: string) => Promise<number>;
-  signAndUploadKeyEmail: (email: string) => Promise<number>;
-  signAndUploadKeyTwitter: (twitterHandle: string) => Promise<number>;
+    metaKey: KeyMetaTypes,
+    metaPayload: LinkedMeta | ContentMeta
+  ) => Promise<any>;
   signMetaAttestation: ({
     metaId,
     metaValueb64,
@@ -75,8 +81,8 @@ export interface SifirIDLib {
   }) => Promise<number>;
   getKeyAttestations: (keyId: string) => Promise<KeyAttestationPayload>;
   getKeyList: ({
-    limit = 10,
-    offset = 0,
+    limit,
+    offset,
     user
   }: {
     limit?: number;

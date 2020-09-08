@@ -42,7 +42,7 @@ var user = process.env.SIFIR_ID_USER;
 var passphrase = process.env.SIFIR_ID_KEY_PASS;
 var idServerUrl = process.env.SIFIR_ID_SERVER_URL;
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var pgp, _a, publickeyArmored, privatekeyArmored, sifir, registrationResult;
+    var pgp, _a, pubkeyArmored, privkeyArmored, sifir, registrationResult;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -55,9 +55,9 @@ var idServerUrl = process.env.SIFIR_ID_SERVER_URL;
                         passphrase: passphrase
                     })];
             case 1:
-                _a = _b.sent(), publickeyArmored = _a.publickeyArmored, privatekeyArmored = _a.privatekeyArmored;
-                console.log("Generated key", privatekeyArmored);
-                pgp.initAndUnlockKeys({ privatekeyArmored: privatekeyArmored, passphrase: passphrase });
+                _a = _b.sent(), pubkeyArmored = _a.pubkeyArmored, privkeyArmored = _a.privkeyArmored;
+                console.log("Generated key", privkeyArmored);
+                pgp.initAndUnlockKeys({ privkeyArmored: privkeyArmored, passphrase: passphrase });
                 sifir = sifirId_1.sifirId({ pgpLib: pgp, idServerUrl: idServerUrl });
                 return [4 /*yield*/, sifir.registerUserKey({ user: user })];
             case 2:
