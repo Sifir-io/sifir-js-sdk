@@ -1,6 +1,7 @@
 import uuid from "uuid/v4";
 import { EventEmitter } from "events";
 import { pgpUtil as _pgpUtil } from "./pgpUtil";
+import { crypto as _crypto } from "./cryptoUtil";
 import _debug from "debug";
 import agent from "superagent";
 import { Buffer } from "buffer";
@@ -13,12 +14,13 @@ import {
   SifirIDLib,
   LinkedMeta,
   ContentMeta,
-  UploadKeyMetaTypePayloadMap
+  UploadKeyMetaTypePayloadMap,
+  UploadFileACL
 } from "./types/sifirId";
 const debug = _debug("sifirutil:");
 const sifirId = ({
-  // TODO accept a btcUtil that getLatestBlock -> btcClient ?
   pgpLib = _pgpUtil(),
+  cryptoLib = _crypto(),
   idServerUrl = "https://pairing.sifir.io"
 } = {}): SifirIDLib => {
   const { getPubkeyArmored, signMessage, getKeyFingerprint } = pgpLib;
@@ -202,13 +204,36 @@ const sifirId = ({
     } = await agent.get(`${idServerUrl}/keys`).query({ limit, offset, user });
     return keys;
   };
+
+  const signAndUploadFile = async ({
+    file,
+    filename
+  }: {
+    file: Buffer;
+    filename: string;
+  }): Promise<{ fileUrl: string; acl: UploadFileACL }> => {
+    if (!filename) throw "uploadSingedFile with no filename";
+    const fileSha256 = cryptoLib.sha256(file);
+    const { armoredSignature } = await pgpLib.signMessage({ msg: fileSha256 });
+    const sha256Sigb64 = Buffer.from(armoredSignature).toString("base64");
+    const { body } = await agent
+      .post(`${idServerUrl}/keys/meta/upload`)
+      // note: order is very important, body before attachment to able to verify data
+      .field("nonce", (await getNonce()).nonce)
+      .field("sha256", fileSha256)
+      .field("sha256Signatureb64", sha256Sigb64)
+      .field("keyId", await pgpLib.getKeyFingerprint())
+      .attach("upload", file, filename);
+    return body;
+  };
   return {
     signAndUploadKeyMeta,
     registerUserKey,
     getNonce,
     signMetaAttestation,
     getKeyList,
-    getKeyAttestations
+    getKeyAttestations,
+    signAndUploadFile
   };
 };
 export { sifirId };

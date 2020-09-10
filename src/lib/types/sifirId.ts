@@ -69,6 +69,9 @@ export interface UploadKeyMetaTypePayloadMap {
   [KeyMetaTypes.keyUserFollow]: ContentMeta;
 }
 
+export enum UploadFileACL {
+  PUBLIC_READ = "public-read"
+}
 export interface SifirIDLib {
   getNonce: () => Promise<{ nonce: string; serverArmoredPubkeyb64: string }>;
   registerUserKey: ({
@@ -78,6 +81,13 @@ export interface SifirIDLib {
     metaKey: T,
     metaPayload: UploadKeyMetaTypePayloadMap[T]
   ): Promise<any>;
+  signAndUploadFile: ({
+    file,
+    filename
+  }: {
+    file: Buffer;
+    filename: string;
+  }) => Promise<{ fileUrl: string; acl: UploadFileACL }>;
   signMetaAttestation: ({
     metaId,
     metaValueb64,

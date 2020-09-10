@@ -51,17 +51,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var pgpUtil_1 = require("./pgpUtil");
+var cryptoUtil_1 = require("./cryptoUtil");
 var debug_1 = __importDefault(require("debug"));
 var superagent_1 = __importDefault(require("superagent"));
 var buffer_1 = require("buffer");
 var sifirId_1 = require("./types/sifirId");
 var debug = debug_1.default("sifirutil:");
 var sifirId = function (_a) {
-    var _b = _a === void 0 ? {} : _a, 
-    // TODO accept a btcUtil that getLatestBlock -> btcClient ?
-    _c = _b.pgpLib, 
-    // TODO accept a btcUtil that getLatestBlock -> btcClient ?
-    pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.idServerUrl, idServerUrl = _d === void 0 ? "https://pairing.sifir.io" : _d;
+    var _b = _a === void 0 ? {} : _a, _c = _b.pgpLib, pgpLib = _c === void 0 ? pgpUtil_1.pgpUtil() : _c, _d = _b.cryptoLib, cryptoLib = _d === void 0 ? cryptoUtil_1.crypto() : _d, _e = _b.idServerUrl, idServerUrl = _e === void 0 ? "https://pairing.sifir.io" : _e;
     var getPubkeyArmored = pgpLib.getPubkeyArmored, signMessage = pgpLib.signMessage, getKeyFingerprint = pgpLib.getKeyFingerprint;
     var getNonce = function () { return __awaiter(void 0, void 0, void 0, function () {
         var _a, serverArmoredPubkeyb64, nonce;
@@ -267,13 +264,47 @@ var sifirId = function (_a) {
             });
         });
     };
+    var signAndUploadFile = function (_a) {
+        var file = _a.file, filename = _a.filename;
+        return __awaiter(void 0, void 0, void 0, function () {
+            var fileSha256, armoredSignature, sha256Sigb64, body, _b, _c, _d, _e, _f, _g;
+            return __generator(this, function (_h) {
+                switch (_h.label) {
+                    case 0:
+                        if (!filename)
+                            throw "uploadSingedFile with no filename";
+                        fileSha256 = cryptoLib.sha256(file);
+                        return [4 /*yield*/, pgpLib.signMessage({ msg: fileSha256 })];
+                    case 1:
+                        armoredSignature = (_h.sent()).armoredSignature;
+                        sha256Sigb64 = buffer_1.Buffer.from(armoredSignature).toString("base64");
+                        _d = (_c = superagent_1.default
+                            .post(idServerUrl + "/keys/meta/upload")).field;
+                        _e = ["nonce"];
+                        return [4 /*yield*/, getNonce()];
+                    case 2:
+                        _f = (_b = _d.apply(_c, _e.concat([(_h.sent()).nonce]))
+                            .field("sha256", fileSha256)
+                            .field("sha256Signatureb64", sha256Sigb64)).field;
+                        _g = ["keyId"];
+                        return [4 /*yield*/, pgpLib.getKeyFingerprint()];
+                    case 3: return [4 /*yield*/, _f.apply(_b, _g.concat([_h.sent()]))
+                            .attach("upload", file, filename)];
+                    case 4:
+                        body = (_h.sent()).body;
+                        return [2 /*return*/, body];
+                }
+            });
+        });
+    };
     return {
         signAndUploadKeyMeta: signAndUploadKeyMeta,
         registerUserKey: registerUserKey,
         getNonce: getNonce,
         signMetaAttestation: signMetaAttestation,
         getKeyList: getKeyList,
-        getKeyAttestations: getKeyAttestations
+        getKeyAttestations: getKeyAttestations,
+        signAndUploadFile: signAndUploadFile
     };
 };
 exports.sifirId = sifirId;
