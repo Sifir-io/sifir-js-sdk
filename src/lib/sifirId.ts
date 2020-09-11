@@ -218,6 +218,7 @@ const sifirId = ({
     const sha256Sigb64 = Buffer.from(armoredSignature).toString("base64");
     const { body } = await agent
       .post(`${idServerUrl}/keys/meta/upload`)
+      .withCredentials()
       // note: order is very important, body before attachment to able to verify data
       .field("nonce", (await getNonce()).nonce)
       .field("sha256", fileSha256)

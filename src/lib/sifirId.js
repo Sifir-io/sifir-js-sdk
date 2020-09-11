@@ -279,7 +279,8 @@ var sifirId = function (_a) {
                         armoredSignature = (_h.sent()).armoredSignature;
                         sha256Sigb64 = buffer_1.Buffer.from(armoredSignature).toString("base64");
                         _d = (_c = superagent_1.default
-                            .post(idServerUrl + "/keys/meta/upload")).field;
+                            .post(idServerUrl + "/keys/meta/upload")
+                            .withCredentials()).field;
                         _e = ["nonce"];
                         return [4 /*yield*/, getNonce()];
                     case 2:
