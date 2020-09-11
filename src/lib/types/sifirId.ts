@@ -87,7 +87,7 @@ export interface SifirIDLib {
   }: {
     file: Buffer;
     filename: string;
-  }) => Promise<{ fileUrl: string; acl: UploadFileACL }>;
+  }) => Promise<{ fileUrl: string; acl: UploadFileACL; sha256: string }>;
   signMetaAttestation: ({
     metaId,
     metaValueb64,

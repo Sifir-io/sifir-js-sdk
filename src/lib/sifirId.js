@@ -292,7 +292,7 @@ var sifirId = function (_a) {
                             .attach("upload", file, filename)];
                     case 4:
                         body = (_h.sent()).body;
-                        return [2 /*return*/, body];
+                        return [2 /*return*/, { fileUrl: body.fileUrl, acl: body.acl, sha256: fileSha256 }];
                 }
             });
         });

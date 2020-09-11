@@ -211,7 +211,7 @@ const sifirId = ({
   }: {
     file: Buffer;
     filename: string;
-  }): Promise<{ fileUrl: string; acl: UploadFileACL }> => {
+  }): Promise<{ fileUrl: string; acl: UploadFileACL; sha256: string }> => {
     if (!filename) throw "uploadSingedFile with no filename";
     const fileSha256 = cryptoLib.sha256(file);
     const { armoredSignature } = await pgpLib.signMessage({ msg: fileSha256 });
@@ -224,7 +224,7 @@ const sifirId = ({
       .field("sha256Signatureb64", sha256Sigb64)
       .field("keyId", await pgpLib.getKeyFingerprint())
       .attach("upload", file, filename);
-    return body;
+    return { fileUrl: body.fileUrl, acl: body.acl, sha256: fileSha256 };
   };
   return {
     signAndUploadKeyMeta,
