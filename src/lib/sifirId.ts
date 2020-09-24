@@ -205,6 +205,12 @@ const sifirId = ({
     return keys;
   };
 
+  const signFile = async (file: Buffer) => {
+    const fileSha256 = cryptoLib.sha256(file);
+    const { armoredSignature } = await pgpLib.signMessage({ msg: fileSha256 });
+    const sha256Sigb64 = Buffer.from(armoredSignature).toString("base64");
+    return { fileSha256, sha256Sigb64 };
+  };
   const signAndUploadFile = async ({
     file,
     filename
@@ -213,9 +219,7 @@ const sifirId = ({
     filename: string;
   }): Promise<{ fileUrl: string; acl: UploadFileACL; sha256: string }> => {
     if (!filename) throw "uploadSingedFile with no filename";
-    const fileSha256 = cryptoLib.sha256(file);
-    const { armoredSignature } = await pgpLib.signMessage({ msg: fileSha256 });
-    const sha256Sigb64 = Buffer.from(armoredSignature).toString("base64");
+    const { fileSha256, sha256Sigb64 } = await signFile(file);
     const { body } = await agent
       .post(`${idServerUrl}/keys/meta/upload`)
       .withCredentials()
@@ -234,7 +238,8 @@ const sifirId = ({
     signMetaAttestation,
     getKeyList,
     getKeyAttestations,
-    signAndUploadFile
+    signAndUploadFile,
+    signFile
   };
 };
 export { sifirId };

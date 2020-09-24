@@ -264,35 +264,47 @@ var sifirId = function (_a) {
             });
         });
     };
+    var signFile = function (file) { return __awaiter(void 0, void 0, void 0, function () {
+        var fileSha256, armoredSignature, sha256Sigb64;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    fileSha256 = cryptoLib.sha256(file);
+                    return [4 /*yield*/, pgpLib.signMessage({ msg: fileSha256 })];
+                case 1:
+                    armoredSignature = (_a.sent()).armoredSignature;
+                    sha256Sigb64 = buffer_1.Buffer.from(armoredSignature).toString("base64");
+                    return [2 /*return*/, { fileSha256: fileSha256, sha256Sigb64: sha256Sigb64 }];
+            }
+        });
+    }); };
     var signAndUploadFile = function (_a) {
         var file = _a.file, filename = _a.filename;
         return __awaiter(void 0, void 0, void 0, function () {
-            var fileSha256, armoredSignature, sha256Sigb64, body, _b, _c, _d, _e, _f, _g;
-            return __generator(this, function (_h) {
-                switch (_h.label) {
+            var _b, fileSha256, sha256Sigb64, body, _c, _d, _e, _f, _g, _h;
+            return __generator(this, function (_j) {
+                switch (_j.label) {
                     case 0:
                         if (!filename)
                             throw "uploadSingedFile with no filename";
-                        fileSha256 = cryptoLib.sha256(file);
-                        return [4 /*yield*/, pgpLib.signMessage({ msg: fileSha256 })];
+                        return [4 /*yield*/, signFile(file)];
                     case 1:
-                        armoredSignature = (_h.sent()).armoredSignature;
-                        sha256Sigb64 = buffer_1.Buffer.from(armoredSignature).toString("base64");
-                        _d = (_c = superagent_1.default
+                        _b = _j.sent(), fileSha256 = _b.fileSha256, sha256Sigb64 = _b.sha256Sigb64;
+                        _e = (_d = superagent_1.default
                             .post(idServerUrl + "/keys/meta/upload")
                             .withCredentials()).field;
-                        _e = ["nonce"];
+                        _f = ["nonce"];
                         return [4 /*yield*/, getNonce()];
                     case 2:
-                        _f = (_b = _d.apply(_c, _e.concat([(_h.sent()).nonce]))
+                        _g = (_c = _e.apply(_d, _f.concat([(_j.sent()).nonce]))
                             .field("sha256", fileSha256)
                             .field("sha256Signatureb64", sha256Sigb64)).field;
-                        _g = ["keyId"];
+                        _h = ["keyId"];
                         return [4 /*yield*/, pgpLib.getKeyFingerprint()];
-                    case 3: return [4 /*yield*/, _f.apply(_b, _g.concat([_h.sent()]))
+                    case 3: return [4 /*yield*/, _g.apply(_c, _h.concat([_j.sent()]))
                             .attach("upload", file, filename)];
                     case 4:
-                        body = (_h.sent()).body;
+                        body = (_j.sent()).body;
                         return [2 /*return*/, { fileUrl: body.fileUrl, acl: body.acl, sha256: fileSha256 }];
                 }
             });
@@ -305,7 +317,8 @@ var sifirId = function (_a) {
         signMetaAttestation: signMetaAttestation,
         getKeyList: getKeyList,
         getKeyAttestations: getKeyAttestations,
-        signAndUploadFile: signAndUploadFile
+        signAndUploadFile: signAndUploadFile,
+        signFile: signFile
     };
 };
 exports.sifirId = sifirId;

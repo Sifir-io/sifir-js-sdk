@@ -81,6 +81,12 @@ export interface SifirIDLib {
     metaKey: T,
     metaPayload: UploadKeyMetaTypePayloadMap[T]
   ): Promise<any>;
+  signFile: (
+    file: Buffer
+  ) => Promise<{
+    fileSha256: string;
+    sha256Sigb64: string;
+  }>;
   signAndUploadFile: ({
     file,
     filename
