@@ -21,7 +21,7 @@
   "main": "index.js",
   "react-native": {
     "./pgpUtil": false,
-    "./src/lib/pgpUtil": false,
+    "./src/lib/pgpUtil": false
   },
   "license": "MIT",
   "scripts": {
@@ -29,7 +29,7 @@
     "test:cn:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/btcClient.spec.js",
     "test:cn:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/lncClient.spec.js",
     "test:cn:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/otsClient.spec.js",
-    "test:cn": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js",
+    "test:cn": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/cyphernode/*.spec.js",
     "test:util:pgp": "node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/pgpUtil.spec.js",
     "cli": "CYPHERNODE_GATEKEEPER_CERT_CA=$(cat test.pem) node -r dotenv/config cli.js"
   },
@@ -40,7 +40,9 @@
   },
   "devDependencies": {
     "@types/async": "^3.0.1",
+    "@types/crypto-js": "^4.0.1",
     "@types/debug": "^4.1.5",
+    "@types/openpgp": "^4.4.14",
     "@types/sinon": "^7.0.13",
     "@types/superagent": "^4.1.10",
     "@types/superagent-proxy": "^2.0.0",
@@ -55,10 +57,10 @@
     "prettier": "^1.18.2",
     "sinon": "^7.3.2",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.2",
+    "typescript": "^3.9.7",
     "uuid": "^3.3.2"
   },
   "dependencies": {
-    "crypto-js": "^4.0.0",
+    "crypto-js": "^4.0.0"
   }
 }

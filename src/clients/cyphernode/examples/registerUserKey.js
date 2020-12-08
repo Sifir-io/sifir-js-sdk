@@ -36,8 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var sifirId_1 = require("../lib/sifirId");
-var pgpUtil_1 = require("../lib/pgpUtil");
+var sifirId_1 = require("../../../lib/sifirId");
+var pgpUtil_1 = require("../../../lib/pgpUtil");
 var user = process.env.SIFIR_ID_USER;
 var passphrase = process.env.SIFIR_ID_KEY_PASS;
 var idServerUrl = process.env.SIFIR_ID_SERVER_URL;

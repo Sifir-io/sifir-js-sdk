@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This example will fetch all your watched Pub32 from Cyphernode and their balances , and then print them out in a simple console output
  */
-var btcClient_1 = require("../clients/btcClient");
+var btcClient_1 = require("../btcClient");
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var _a, getWatchedPub32, getBalanceByPub32Label, getTransactionsByPub32Label, getUnusedAddressesByPub32Label, unwatchPub32ByLabel, getNewAddress, getBalance, getTxnsSpending, watchedPub32, _b, address, balance, txns;
     return __generator(this, function (_c) {

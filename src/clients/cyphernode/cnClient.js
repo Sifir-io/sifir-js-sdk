@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.client = void 0;
 var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNodeHttpTransport"));
 exports.client = function (_a) {
     var _b = (_a === void 0 ? {} : _a).transport, transport = _b === void 0 ? cypherNodeHttpTransport_1.default() : _b;

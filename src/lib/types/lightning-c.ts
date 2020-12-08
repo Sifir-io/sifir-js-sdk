@@ -1,4 +1,4 @@
-import { TimeStamp, BlockHeight } from "./btc.d";
+import { TimeStamp, BlockHeight } from "./btc";
 
 export type TimeStamp = TimeStamp;
 export type ConnectionString = string;

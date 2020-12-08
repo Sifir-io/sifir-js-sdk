@@ -40,10 +40,7 @@ export interface SifirPgpUtil {
     isLocked: boolean;
     isExpired: boolean;
   }>;
-  getKeyFingerprint({
-    armoredkey,
-    encoding
-  }: {
+  getKeyFingerprint(param?: {
     armoredkey?: string;
     encoding?: "hex" | "utf8";
   }): Promise<string>;

@@ -64,27 +64,19 @@ ava_1.serial("hmacSHA256Hex should generate a hash identifcal to reference fn", 
         }
     });
 }); });
-ava_1.serial("Cyphernodeclient should generate a valid auth hash", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var apiKey, userType, makeToken, token, _a, h64, p64, generatedHash, hmac, trueHash;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                apiKey = "somekey";
-                userType = 3;
-                makeToken = cryptoUtil_1.crypto().makeToken;
-                return [4 /*yield*/, makeToken(apiKey, userType)];
-            case 1:
-                token = _b.sent();
-                t.is(token.length, 142);
-                _a = token.split("."), h64 = _a[0], p64 = _a[1], generatedHash = _a[2];
-                hmac = crypto_1.createHmac("sha256", apiKey);
-                hmac.update(h64 + "." + p64);
-                trueHash = hmac.digest("hex");
-                t.true(generatedHash === trueHash);
-                return [2 /*return*/];
-        }
-    });
-}); });
+//test("Cyphernodeclient should generate a valid auth hash", async t => {
+//  const apiKey = "somekey";
+//  const userType = 3;
+//  const { makeToken } = crypto();
+//  const token = await makeToken(apiKey, userType);
+//  t.is(token.length, 142);
+//  const [h64, p64, generatedHash] = token.split(".");
+//  // Test generated hash vs reference
+//  const hmac = createHmac("sha256", <BinaryType>apiKey);
+//  hmac.update(`${h64}.${p64}`);
+//  const trueHash = hmac.digest("hex");
+//  t.true(generatedHash === trueHash);
+//});
 ava_1.serial("Sha256 should hash correctly", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var stringToHash, bashSha256Sum, sha256;
     return __generator(this, function (_a) {

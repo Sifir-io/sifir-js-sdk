@@ -1,15 +1,22 @@
-export { client as btcClient } from "./src/clients/btcClient";
-export { client as lnClient } from "./src/clients/lncClient";
-export { client as otsClient } from "./src/clients/otsClient";
-export { client as wasabiClient } from "./src/clients/wasabiClient";
-export { client as sifirClient } from "./src/clients/sifirClient";
-export { client as cnClient } from "./src/clients/cnClient";
-export {
-  default as cypherNodeHttpTransport
-} from "./src/transport/cypherNodeHttpTransport";
-export { crypto as cryptoUtils } from "./src/lib/cryptoUtil";
-export { pgpUtil } from "./src/lib/pgpUtil";
-export { sifirId } from "./src/lib/sifirId";
+import { client as btcClient } from "./src/clients/cyphernode/btcClient";
+import { client as lnClient } from "./src/clients/cyphernode/lncClient";
+import { client as otsClient } from "./src/clients/cyphernode/otsClient";
+import { client as wasabiClient } from "./src/clients/cyphernode/wasabiClient";
+import { client as cnClient } from "./src/clients/cyphernode/cnClient";
+import {cypherNodeAuthHelper} from "./src/clients/cyphernode/util/auth"
+const cyphernode = {
+  btcClient,
+  lnClient,
+  otsClient,
+  wasabiClient,
+  cnClient,
+  authHelper: cypherNodeAuthHelper
+}
+import { crypto as cryptoUtils } from "./src/lib/cryptoUtil";
+import { pgpUtil } from "./src/lib/pgpUtil";
+import { sifirId } from "./src/lib/sifirId";
+
+export {cyphernode,pgpUtil,sifirId,cryptoUtils}
 // typpes
 export * from "./src/lib/types/sifirId";
 export * from "./src/lib/types/pgpUtil";

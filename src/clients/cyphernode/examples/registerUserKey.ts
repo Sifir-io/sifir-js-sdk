@@ -1,5 +1,5 @@
-import { sifirId } from "../../lib/sifirId";
-import { pgpUtil } from "../../lib/pgpUtil";
+import { sifirId } from "../../../lib/sifirId";
+import { pgpUtil } from "../../../lib/pgpUtil";
 const user = process.env.SIFIR_ID_USER;
 const passphrase = process.env.SIFIR_ID_KEY_PASS;
 const idServerUrl = process.env.SIFIR_ID_SERVER_URL;

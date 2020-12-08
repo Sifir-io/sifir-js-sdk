@@ -1,7 +1,7 @@
 import _debug from "debug";
 import { serial, TestInterface } from "ava";
-import { pgpUtil as _pgpUtil, SifirPgpUtil } from "./pgpUtil";
-import * as _pgp from "openpgp";
+import { pgpUtil as _pgpUtil } from "./pgpUtil";
+import {SifirPgpUtil} from "./types/pgpUtil";
 const test = serial as TestInterface<SifirPgpUtil>;
 const debug = _debug("sifir:pgputilspec");
 test.before(t => {

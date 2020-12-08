@@ -35,92 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.crypto = void 0;
 var crypto_js_1 = __importDefault(require("crypto-js"));
-var buffer_1 = require("buffer");
-//
-// import { createHmac } from "crypto";
 /**
  * Construct crypto functions needed dependig on env (Browser vs Nodde)
  * */
 exports.crypto = function () {
-    var hmacSHA256Hex;
-    if (typeof window !== "undefined" && window.crypto) {
-        var hexString_1 = function (buffer) {
-            var byteArray = new Uint8Array(buffer);
-            var hexCodes = __spreadArrays(byteArray).map(function (value) {
-                var hexCode = value.toString(16);
-                var paddedHexCode = hexCode.padStart(2, "0");
-                return paddedHexCode;
-            });
-            return hexCodes.join("");
-        };
-        hmacSHA256Hex = function (text, key) { return __awaiter(void 0, void 0, void 0, function () {
-            var encoder, hmacKey, digestBuffer;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        encoder = new TextEncoder();
-                        return [4 /*yield*/, window.crypto.subtle.importKey("raw", encoder.encode(key), {
-                                name: "HMAC",
-                                hash: { name: "SHA-256" }
-                            }, true, ["sign", "verify"])];
-                    case 1:
-                        hmacKey = _a.sent();
-                        return [4 /*yield*/, window.crypto.subtle.sign("HMAC", hmacKey, encoder.encode(text))];
-                    case 2:
-                        digestBuffer = _a.sent();
-                        return [2 /*return*/, hexString_1(digestBuffer)];
-                }
-            });
-        }); };
-    }
-    else {
-        hmacSHA256Hex = function (text, key) { return __awaiter(void 0, void 0, void 0, function () {
-            var hmac, hash;
-            return __generator(this, function (_a) {
-                hmac = crypto_js_1.default.algo.HMAC.create(crypto_js_1.default.algo.SHA256, key);
-                hmac.update(text);
-                hash = hmac.finalize();
-                return [2 /*return*/, crypto_js_1.default.enc.Hex.stringify(hash)];
-            });
-        }); };
-    }
-    var makeToken = function (api_key, perm, expiryInSeconds) {
-        if (expiryInSeconds === void 0) { expiryInSeconds = 3600; }
-        return __awaiter(void 0, void 0, void 0, function () {
-            var id, exp, h64, p64, msg, hash;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        id = "00" + perm;
-                        exp = Math.round(new Date().getTime() / 1000) + expiryInSeconds;
-                        h64 = buffer_1.Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64");
-                        p64 = buffer_1.Buffer.from(JSON.stringify({ id: id, exp: exp })).toString("base64");
-                        msg = h64 + "." + p64;
-                        return [4 /*yield*/, hmacSHA256Hex(msg, api_key)];
-                    case 1:
-                        hash = _a.sent();
-                        return [2 /*return*/, msg + "." + hash];
-                }
-            });
+    var hmacSHA256Hex = function (text, key) { return __awaiter(void 0, void 0, void 0, function () {
+        var hmac, hash;
+        return __generator(this, function (_a) {
+            hmac = crypto_js_1.default.algo.HMAC.create(crypto_js_1.default.algo.SHA256, key);
+            hmac.update(text);
+            hash = hmac.finalize();
+            return [2 /*return*/, crypto_js_1.default.enc.Hex.stringify(hash)];
         });
-    };
+    }); };
     /**
      * Returns a Hex encoded sha256 of the provided Buffer
      * */
     var sha256 = function (buffer) {
         return crypto_js_1.default.SHA256(crypto_js_1.default.lib.WordArray.create(buffer)).toString(crypto_js_1.default.enc.Hex);
     };
-    return { hmacSHA256Hex: hmacSHA256Hex, makeToken: makeToken, sha256: sha256, CryptoJS: crypto_js_1.default };
+    return { hmacSHA256Hex: hmacSHA256Hex, sha256: sha256, CryptoJS: crypto_js_1.default };
 };

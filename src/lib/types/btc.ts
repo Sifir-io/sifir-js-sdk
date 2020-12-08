@@ -209,7 +209,7 @@ export interface SpenderGetTxnResult {
   timereceived: number;
   "bip125-replaceable": "yes" | "no";
 }
-export interface CypherNodeBtcClient {
+export interface SifirBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
   getNewAddress(): Promise<Address>;

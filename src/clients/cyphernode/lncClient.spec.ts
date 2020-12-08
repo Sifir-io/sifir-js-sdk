@@ -1,8 +1,8 @@
 import { serial, TestInterface } from "ava";
 import { client as lnClient } from "./lncClient";
 import uuid from "uuid/v4";
-import { CypherNodeLncClient } from "../lib/types/lightning-c";
-interface TestContext extends CypherNodeLncClient {
+import { SifirLnClientInterface } from "../../lib/types/lightning-c";
+interface TestContext extends SifirLnClientInterface {
   lightingInvoiceLabel: string;
 }
 

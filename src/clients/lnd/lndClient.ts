@@ -1,5 +1,5 @@
-import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { ClientConfig } from "../lib/types/clients";
+import cypherNodeHTTPTransport from "../transport/.cypherNodeHttpTransport";
+import { ClientConfig } from "../../lib/types/clients";
 import {
   ConnectionString,
   LnNodeInfo,
@@ -16,54 +16,52 @@ import {
   LnRouteDetails,
   LnListFundsPayload,
   LnListPaysPayload
-} from "../lib/types/lightning-c";
+} from "../../lib/types/lightning-c";
 
-// TODO finish replacing rest of commands
-enum SifirLnCommands {
-  GET_INFO = "ln_getinfo",
-  GET_CONN_STRING = "ln_getconnectionstring",
-  GET_NEW_ADDR = "ln_newaddr",
-  CONNECT_FUND = "ln_connectfund",
-  CREATE_INVOICE = "ln_create_invoice",
-  GET_INVOICES = "ln_getinvoice",
-  DEL_INVOICE = "ln_delinvoice",
-  DECODE_BOLT = "ln_decodebolt11",
-  GET_ROUTE = "ln_getroute",
-  LIST_PEERS = "ln_listpeers",
-  LIST_FUNDS = "ln_listfunds",
-  LIST_PAYMENTS = "ln_listpays",
-  PAY_BOLT11 = "ln_pay",
-  WITHDRAW = "ln_withdraw"
+interface LndOpenChannelRequest{
+   min_confs?: number;
+   spend_unconfirmed?: boolean;
+   remote_csv_delay?: number;
+   node_pubkey_string: string;
+   node_pubkey?: any;
+   push_sat?: string;
+   target_conf?: number;
+   sat_per_byte?: string;
+   private?: boolean;
+   min_htlc_msat?: string;
+   local_funding_amount: string;
+   host: string;
+   id?: string;
+   satoshis?: string;
+   announce?: boolean;
+   utxos?: string[];
+
 }
-
-// Backends
-// Although most would implment same get/post we're not guanteed that
-// so best to change clients ?
-// and make sure all clients implment SifirLnClientInterface and then they get called however they want
-// 1. So put all cn in clients/cyphernode/
-// 2. make new dir /lnd
-// 3. make LnClient for lnd and duck output to whwat interface expects
-// 3. put the clients for the thigns it supports ?
 export const client = ({
   transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): SifirLnClientInterface => {
   const { get, post } = transport;
   const api = {
     getNodeInfo(): Promise<LnNodeInfo> {
-      return get(SifirLnCommands.GET_INFO);
+      return get('v1/graph/node/');
     },
     async getConnectionString(): Promise<ConnectionString> {
       const { connectstring } = await get(SifirLnCommands.GET_CONN_STRING);
       return connectstring;
     },
     async getNewAddress(): Promise<LnAddress> {
-      const { address } = await get(SifirLnCommands.GET_NEW_ADDR);
+      const { address } = await get('/v1/newaddress');
       return address;
     },
     openAndFundPeerChannel(
       payload: LnConnectAndFundPayload
     ): Promise<LnConnectAndFundResult> {
-      return post(SifirLnCommands.CONNECT_FUND, payload);
+      const channelReq:LndOpenChannelRequest = {
+        node_pubkey_string: payload.peer,
+        host: payload.peer,
+        local_funding_amount: (payload.msatoshi * 1000).toString(),
+      }
+      return post('/v1/channels',channelReq);
     },
 
     createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice> {

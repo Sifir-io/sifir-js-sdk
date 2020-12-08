@@ -1,11 +1,11 @@
 import { serial, TestInterface } from "ava";
 import { client as btcClient } from "./btcClient";
 import {
-  CypherNodeBtcClient,
+  SifirBtcClient,
   AddressType,
   Pub32WatcherOptions
-} from "../lib/types/btc.d";
-const test = serial as TestInterface<CypherNodeBtcClient & { chain: string }>;
+} from "../../lib/types/btc";
+const test = serial as TestInterface<SifirBtcClient & { chain: string }>;
 test.before(async t => {
   const client = btcClient();
   // check which chain we're on

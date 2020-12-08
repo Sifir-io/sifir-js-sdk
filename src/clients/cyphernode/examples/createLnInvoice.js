@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This example will fetch all your watched Pub32 from Cyphernode and their balances , and then print them out in a simple console output
  */
-var lncClient_1 = require("../clients/lncClient");
+var lncClient_1 = require("../lncClient");
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var createInvoice, invoice, err_1;
     return __generator(this, function (_a) {
@@ -56,15 +56,14 @@ var lncClient_1 = require("../clients/lncClient");
                     })];
             case 1:
                 invoice = _a.sent();
+                console.log("invoice", invoice);
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
                 console.error(err_1);
                 process.exit();
                 return [3 /*break*/, 3];
-            case 3:
-                console.log("invoice", invoice);
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); })();

@@ -1,7 +1,7 @@
 import cypherNodeHTTPTransport from "./util/transportFactory";
 import { ClientConfig } from "../../lib/types/clients";
 import {
-  CypherNodeBtcClient,
+  SifirBtcClient,
   Hash,
   BlockInfo,
   TxnInfo,
@@ -26,7 +26,7 @@ import {
 } from "../../lib/types/btc";
 export const client = ({
   transport = cypherNodeHTTPTransport()
-}: ClientConfig = {}): CypherNodeBtcClient => {
+}: ClientConfig = {}): SifirBtcClient => {
   const { get, post } = transport;
   const api = {
     /** Core and Spending */

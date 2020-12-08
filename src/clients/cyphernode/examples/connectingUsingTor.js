@@ -42,20 +42,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A simple example showing how easy it is to connect to your Cyphernode behind a proxy (Ex. Tor) using the SDK
  * by simply injecting the proxied transport into the client of your choice
+ * Make sure the following env variables are set:
+    // Gatekeeper onion
+    CYPHER_GATEWAY_URL
+   // Cyphernode Cert
+    CYPHERNODE_GATEKEEPER_CERT_CA) || "";
+   // Socks5 endpoint
+   TOR_PROXY_URL
  */
-var btcClient_1 = require("../clients/btcClient");
-var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNodeHttpTransport"));
+var btcClient_1 = require("../btcClient");
+var transportFactory_1 = __importDefault(require("../util/transportFactory"));
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cnOnionUrl, transport, client, bestBlockInfo, err_1;
+    var transport, client, bestBlockInfo, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                cnOnionUrl = process.env.CYPHER_ONION_URL || "change.me.onion";
-                transport = cypherNodeHttpTransport_1.default({
-                    proxyUrl: "socks://127.0.0.1:9050",
-                    gatewayUrl: cnOnionUrl
-                });
+                transport = transportFactory_1.default();
                 client = btcClient_1.client({ transport: transport });
                 return [4 /*yield*/, client.getBestBlockInfo()];
             case 1:

@@ -39,20 +39,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNodeHttpTransport"));
+exports.client = void 0;
+var transportFactory_1 = __importDefault(require("./util/transportFactory"));
+// TODO finish replacing rest of commands
+var SifirLnCommands;
+(function (SifirLnCommands) {
+    SifirLnCommands["GET_INFO"] = "ln_getinfo";
+    SifirLnCommands["GET_CONN_STRING"] = "ln_getconnectionstring";
+    SifirLnCommands["GET_NEW_ADDR"] = "ln_newaddr";
+    SifirLnCommands["CONNECT_FUND"] = "ln_connectfund";
+    SifirLnCommands["CREATE_INVOICE"] = "ln_create_invoice";
+    SifirLnCommands["GET_INVOICES"] = "ln_getinvoice";
+    SifirLnCommands["DEL_INVOICE"] = "ln_delinvoice";
+    SifirLnCommands["DECODE_BOLT"] = "ln_decodebolt11";
+    SifirLnCommands["GET_ROUTE"] = "ln_getroute";
+    SifirLnCommands["LIST_PEERS"] = "ln_listpeers";
+    SifirLnCommands["LIST_FUNDS"] = "ln_listfunds";
+    SifirLnCommands["LIST_PAYMENTS"] = "ln_listpays";
+    SifirLnCommands["PAY_BOLT11"] = "ln_pay";
+    SifirLnCommands["WITHDRAW"] = "ln_withdraw";
+})(SifirLnCommands || (SifirLnCommands = {}));
 exports.client = function (_a) {
-    var _b = (_a === void 0 ? {} : _a).transport, transport = _b === void 0 ? cypherNodeHttpTransport_1.default() : _b;
+    var _b = (_a === void 0 ? {} : _a).transport, transport = _b === void 0 ? transportFactory_1.default() : _b;
     var get = transport.get, post = transport.post;
     var api = {
         getNodeInfo: function () {
-            return get("ln_getinfo");
+            return get(SifirLnCommands.GET_INFO);
         },
         getConnectionString: function () {
             return __awaiter(this, void 0, void 0, function () {
                 var connectstring;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, get("ln_getconnectionstring")];
+                        case 0: return [4 /*yield*/, get(SifirLnCommands.GET_CONN_STRING)];
                         case 1:
                             connectstring = (_a.sent()).connectstring;
                             return [2 /*return*/, connectstring];
@@ -65,7 +84,7 @@ exports.client = function (_a) {
                 var address;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, get("ln_newaddr")];
+                        case 0: return [4 /*yield*/, get(SifirLnCommands.GET_NEW_ADDR)];
                         case 1:
                             address = (_a.sent()).address;
                             return [2 /*return*/, address];
@@ -74,10 +93,10 @@ exports.client = function (_a) {
             });
         },
         openAndFundPeerChannel: function (payload) {
-            return post("ln_connectfund", payload);
+            return post(SifirLnCommands.CONNECT_FUND, payload);
         },
         createInvoice: function (invoice) {
-            return post("ln_create_invoice", invoice);
+            return post(SifirLnCommands.CREATE_INVOICE, invoice);
         },
         getInvoice: function (invoiceLabel) {
             return __awaiter(this, void 0, void 0, function () {
