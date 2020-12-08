@@ -1,7 +1,7 @@
 /**
  * This example will fetch all your watched Pub32 from Cyphernode and their balances , and then print them out in a simple console output
  */
-import { client as btcClient } from "../clients/btcClient";
+import { client as btcClient } from "../btcClient";
 (async () => {
   const {
     getWatchedPub32,

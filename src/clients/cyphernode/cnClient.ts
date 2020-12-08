@@ -1,6 +1,6 @@
 import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { ClientConfig } from "../lib/types/clients";
-import { cnClient } from "../lib/types/cnClient.d";
+import { ClientConfig } from "../../lib/types/clients";
+import { cnClient } from "../../lib/types/cnClient";
 
 export const client = ({
   transport = cypherNodeHTTPTransport()

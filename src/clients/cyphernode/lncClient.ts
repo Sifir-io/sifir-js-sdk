@@ -1,5 +1,5 @@
-import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { ClientConfig } from "../lib/types/clients";
+import cypherNodeHTTPTransport from "./util/transportFactory";
+import { ClientConfig } from "../../lib/types/clients";
 import {
   ConnectionString,
   LnNodeInfo,
@@ -8,7 +8,7 @@ import {
   LnAddress,
   Bolt11String,
   DecodedBolt11,
-  CypherNodeLncClient,
+  SifirLnClientInterface,
   LnConnectAndFundPayload,
   LnConnectAndFundResult,
   LnListPeersPayload,
@@ -16,31 +16,50 @@ import {
   LnRouteDetails,
   LnListFundsPayload,
   LnListPaysPayload
-} from "../lib/types/lightning-c";
+} from "../../lib/types/lightning-c";
+
+// TODO finish replacing rest of commands
+enum SifirLnCommands {
+  GET_INFO = "ln_getinfo",
+  GET_CONN_STRING = "ln_getconnectionstring",
+  GET_NEW_ADDR = "ln_newaddr",
+  CONNECT_FUND = "ln_connectfund",
+  CREATE_INVOICE = "ln_create_invoice",
+  GET_INVOICES = "ln_getinvoice",
+  DEL_INVOICE = "ln_delinvoice",
+  DECODE_BOLT = "ln_decodebolt11",
+  GET_ROUTE = "ln_getroute",
+  LIST_PEERS = "ln_listpeers",
+  LIST_FUNDS = "ln_listfunds",
+  LIST_PAYMENTS = "ln_listpays",
+  PAY_BOLT11 = "ln_pay",
+  WITHDRAW = "ln_withdraw"
+}
+
 export const client = ({
   transport = cypherNodeHTTPTransport()
-}: ClientConfig = {}): CypherNodeLncClient => {
+}: ClientConfig = {}): SifirLnClientInterface => {
   const { get, post } = transport;
   const api = {
     getNodeInfo(): Promise<LnNodeInfo> {
-      return get("ln_getinfo");
+      return get(SifirLnCommands.GET_INFO);
     },
     async getConnectionString(): Promise<ConnectionString> {
-      const { connectstring } = await get("ln_getconnectionstring");
+      const { connectstring } = await get(SifirLnCommands.GET_CONN_STRING);
       return connectstring;
     },
     async getNewAddress(): Promise<LnAddress> {
-      const { address } = await get("ln_newaddr");
+      const { address } = await get(SifirLnCommands.GET_NEW_ADDR);
       return address;
     },
     openAndFundPeerChannel(
       payload: LnConnectAndFundPayload
     ): Promise<LnConnectAndFundResult> {
-      return post("ln_connectfund", payload);
+      return post(SifirLnCommands.CONNECT_FUND, payload);
     },
 
     createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice> {
-      return post("ln_create_invoice", invoice);
+      return post(SifirLnCommands.CREATE_INVOICE, invoice);
     },
     async getInvoice(invoiceLabel?: string): Promise<CreatedInvoice[]> {
       const { invoices } = await get("ln_getinvoice", invoiceLabel);

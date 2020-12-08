@@ -1,11 +1,11 @@
-import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { ClientConfig } from "../lib/types/clients";
+import cypherNodeHTTPTransport from "./util/transportFactory";
+import { ClientConfig } from "../../lib/types/clients";
 import {
   CypherNodeOTSClient,
   Hash,
   OTSStampRcpt,
   OTSVerifyPayload
-} from "../lib/types/ots";
+} from "../../lib/types/ots";
 export const client = ({
   transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): CypherNodeOTSClient => {

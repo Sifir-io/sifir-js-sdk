@@ -1,5 +1,5 @@
-import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { ClientConfig } from "../lib/types/clients";
+import cypherNodeHTTPTransport from "./util/transportFactory";
+import { ClientConfig } from "../../lib/types/clients";
 import {
   WasabiClient,
   Address,
@@ -8,7 +8,7 @@ import {
   WasabiNewAddressPayload,
   WasabiSpendPayload,
   WasabiGetUnspentCoinsPayload
-} from "../lib/types/wasabi.d";
+} from "../../lib/types/wasabi";
 
 export const client = ({
   transport = cypherNodeHTTPTransport()
@@ -44,7 +44,7 @@ export const client = ({
     }): Promise<WasabiSpendPayload> {
       return post("wasabi_spend", param);
     },
-    async autoSpendReadyCoins(): Promise<WasabiSpendPayload> {
+    async autoSpendReadyCoins(): Promise<any> {
       return get("wasabi_spendprivate");
     }
   };

@@ -198,7 +198,7 @@ export interface LnListPaysPayload {
   amount_sent_msat: string; // "0msat";
   preimage?: string;
 }
-export interface CypherNodeLncClient {
+export interface SifirLnClientInterface {
   getNodeInfo(): Promise<LnNodeInfo>;
   getConnectionString(): Promise<ConnectionString>;
   getNewAddress(): Promise<LnAddress>;

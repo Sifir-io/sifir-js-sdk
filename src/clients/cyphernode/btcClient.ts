@@ -1,5 +1,5 @@
-import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { ClientConfig } from "../lib/types/clients";
+import cypherNodeHTTPTransport from "./util/transportFactory";
+import { ClientConfig } from "../../lib/types/clients";
 import {
   CypherNodeBtcClient,
   Hash,
@@ -23,7 +23,7 @@ import {
   SpendConfirmation,
   SpenderGetTxnResult,
   BumpfeeResp
-} from "../lib/types/btc.d";
+} from "../../lib/types/btc";
 export const client = ({
   transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): CypherNodeBtcClient => {

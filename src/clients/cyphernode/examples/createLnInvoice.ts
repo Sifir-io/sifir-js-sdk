@@ -1,7 +1,7 @@
 /**
  * This example will fetch all your watched Pub32 from Cyphernode and their balances , and then print them out in a simple console output
  */
-import { client } from "../clients/lncClient";
+import { client } from "../lncClient";
 (async () => {
   try {
     const { createInvoice } = client();
@@ -12,10 +12,10 @@ import { client } from "../clients/lncClient";
       callback_url: null,
       msatoshi: 0
     });
+    console.log("invoice", invoice);
   } catch (err) {
     console.error(err);
     process.exit();
   }
 
-  console.log("invoice", invoice);
 })();
