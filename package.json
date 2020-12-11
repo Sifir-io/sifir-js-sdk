@@ -20,7 +20,8 @@
   "main": "index.js",
   "react-native": {
     "./pgpUtil": false,
-    "./src/lib/pgpUtil": false
+    "./src/lib/pgpUtil": false,
+    "superagent-proxy": false
   },
   "license": "MIT",
   "scripts": {
