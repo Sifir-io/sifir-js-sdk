@@ -19,7 +19,7 @@ import {
 } from "../../lib/types/lightning-c";
 
 // TODO finish replacing rest of commands
-enum SifirLnCommands {
+enum CyphernodeLnCommands {
   GET_INFO = "ln_getinfo",
   GET_CONN_STRING = "ln_getconnectionstring",
   GET_NEW_ADDR = "ln_newaddr",
@@ -41,25 +41,28 @@ export const client = ({
 }: ClientConfig = {}): SifirLnClientInterface => {
   const { get, post } = transport;
   const api = {
-    getNodeInfo(): Promise<LnNodeInfo> {
-      return get(SifirLnCommands.GET_INFO);
+    // FIXME update this to get 'a' nodes info if id is provided
+    // Implement listnodes/nodeId
+    //	  https://lightning.readthedocs.io/lightning-listnodes.7.html
+    getNodeInfo(nodeId?: string): Promise<LnNodeInfo> {
+      return get(CyphernodeLnCommands.GET_INFO);
     },
     async getConnectionString(): Promise<ConnectionString> {
-      const { connectstring } = await get(SifirLnCommands.GET_CONN_STRING);
+      const { connectstring } = await get(CyphernodeLnCommands.GET_CONN_STRING);
       return connectstring;
     },
     async getNewAddress(): Promise<LnAddress> {
-      const { address } = await get(SifirLnCommands.GET_NEW_ADDR);
+      const { address } = await get(CyphernodeLnCommands.GET_NEW_ADDR);
       return address;
     },
     openAndFundPeerChannel(
       payload: LnConnectAndFundPayload
     ): Promise<LnConnectAndFundResult> {
-      return post(SifirLnCommands.CONNECT_FUND, payload);
+      return post(CyphernodeLnCommands.CONNECT_FUND, payload);
     },
 
     createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice> {
-      return post(SifirLnCommands.CREATE_INVOICE, invoice);
+      return post(CyphernodeLnCommands.CREATE_INVOICE, invoice);
     },
     async getInvoice(invoiceLabel?: string): Promise<CreatedInvoice[]> {
       const { invoices } = await get("ln_getinvoice", invoiceLabel);
@@ -77,21 +80,21 @@ export const client = ({
       nodeId: string,
       amount: number,
       riskFactor = 0
-    ): Promise<[LnRouteDetails]> {
+    ): Promise<LnRouteDetails[][]> {
       const { route } = await get(
         "ln_getroute",
         [nodeId, amount, riskFactor].join("/")
       );
-      return route;
+      return [route];
     },
-    async listPeers(nodeId?: string): Promise<[LnListPeersPayload]> {
+    async listPeers(nodeId?: string): Promise<LnListPeersPayload[]> {
       const { peers } = await get("ln_listpeers", nodeId);
       return peers;
     },
     listFunds(): Promise<LnListFundsPayload> {
       return get("ln_listfunds");
     },
-    async listPays(bolt11?: string): Promise<[LnListPaysPayload]> {
+    async listPays(bolt11?: string): Promise<LnListPaysPayload[]> {
       const { pays } = await get("ln_listpays");
       return pays;
     },
@@ -118,6 +121,9 @@ export const client = ({
         feerate
       });
     }
+    // TODO clighning can do both these but cn non
+    //	  keySend()
+    //	  listTransactions();
   };
   return api;
 };

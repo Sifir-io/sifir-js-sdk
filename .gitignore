@@ -6,3 +6,5 @@ scripts/
 *.swp
 *.pem
 .idea/**
+**/**/*.bak
+**/**/*.old.json

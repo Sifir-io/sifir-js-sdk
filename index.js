@@ -10,14 +10,16 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cryptoUtils = exports.sifirId = exports.pgpUtil = exports.cyphernode = void 0;
-var btcClient_1 = require("./src/clients/cyphernode/btcClient");
-var lncClient_1 = require("./src/clients/cyphernode/lncClient");
-var otsClient_1 = require("./src/clients/cyphernode/otsClient");
-var wasabiClient_1 = require("./src/clients/cyphernode/wasabiClient");
-var cnClient_1 = require("./src/clients/cyphernode/cnClient");
-var auth_1 = require("./src/clients/cyphernode/util/auth");
-var cyphernode = {
+exports.cryptoUtils = exports.sifirId = exports.pgpUtil = exports.apis = void 0;
+const btcClient_1 = require("./src/clients/cyphernode/btcClient");
+const lncClient_1 = require("./src/clients/cyphernode/lncClient");
+const otsClient_1 = require("./src/clients/cyphernode/otsClient");
+const wasabiClient_1 = require("./src/clients/cyphernode/wasabiClient");
+const cnClient_1 = require("./src/clients/cyphernode/cnClient");
+const auth_1 = require("./src/clients/cyphernode/util/auth");
+const auth_2 = require("./src/clients/lnd/util/auth");
+const lndClient_1 = require("./src/clients/lnd/lndClient");
+const cyphernode = {
     btcClient: btcClient_1.client,
     lnClient: lncClient_1.client,
     otsClient: otsClient_1.client,
@@ -25,12 +27,20 @@ var cyphernode = {
     cnClient: cnClient_1.client,
     authHelper: auth_1.cypherNodeAuthHelper
 };
-exports.cyphernode = cyphernode;
-var cryptoUtil_1 = require("./src/lib/cryptoUtil");
+const lnd = {
+    lndClient: lndClient_1.client,
+    lndAuthHelper: auth_2.lndHelper
+};
+const apis = {
+    lnd,
+    cyphernode,
+};
+exports.apis = apis;
+const cryptoUtil_1 = require("./src/lib/cryptoUtil");
 Object.defineProperty(exports, "cryptoUtils", { enumerable: true, get: function () { return cryptoUtil_1.crypto; } });
-var pgpUtil_1 = require("./src/lib/pgpUtil");
+const pgpUtil_1 = require("./src/lib/pgpUtil");
 Object.defineProperty(exports, "pgpUtil", { enumerable: true, get: function () { return pgpUtil_1.pgpUtil; } });
-var sifirId_1 = require("./src/lib/sifirId");
+const sifirId_1 = require("./src/lib/sifirId");
 Object.defineProperty(exports, "sifirId", { enumerable: true, get: function () { return sifirId_1.sifirId; } });
 // typpes
 __exportStar(require("./src/lib/types/sifirId"), exports);

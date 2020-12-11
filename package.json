@@ -3,7 +3,6 @@
   "author": "@gabidi",
   "version": "0.3.2",
   "keywords": [
-    "cyphernode",
     "bitcoin",
     "lightning network",
     "ots",
@@ -12,7 +11,7 @@
     "wasabi",
     "lnd",
     "clightning",
-    "eclair"
+    "cyphernode"
   ],
   "repository": {
     "type": "git",
@@ -26,10 +25,11 @@
   "license": "MIT",
   "scripts": {
     "lint": "tslint --fix /src/*.ts",
-    "test:cn:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/btcClient.spec.js",
-    "test:cn:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/lncClient.spec.js",
-    "test:cn:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/otsClient.spec.js",
+    "test:cn:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/btcClient.spec.js",
+    "test:cn:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/lncClient.spec.js",
+    "test:cn:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/cyphernode/otsClient.spec.js",
     "test:cn": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/cyphernode/*.spec.js",
+    "test:lnd": "LND_CA_CERT=$(cat test-lnd.pem) NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/lnd/lndClient.spec.js",
     "test:util:pgp": "node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/pgpUtil.spec.js",
     "cli": "CYPHERNODE_GATEKEEPER_CERT_CA=$(cat test.pem) node -r dotenv/config cli.js"
   },
@@ -49,7 +49,7 @@
     "@types/uuid": "^3.4.5",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
-    "ava": "^2.1.0",
+    "ava": "^2.4.0",
     "debug": "^4.1.1",
     "dotenv": "^8.1.0",
     "eslint-config-prettier": "^6.4.0",
