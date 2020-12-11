@@ -1,7 +1,7 @@
-type CypherNodeCommand = string;
+type Command = string;
 export interface Transport {
-  get: <T>(command: CypherNodeCommand, payload?: any) => Promise<T>;
-  post: <T>(command: CypherNodeCommand, payload: any) => Promise<T>;
+  get: <T>(command: Command, payload?: any) => Promise<T>;
+  post: <T>(command: Command, payload: any) => Promise<T>;
 }
 export interface HTTPTransportParam {
   gatewayUrl: string;

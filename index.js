@@ -33,7 +33,7 @@ const lnd = {
 };
 const apis = {
     lnd,
-    cyphernode,
+    cyphernode
 };
 exports.apis = apis;
 const cryptoUtil_1 = require("./src/lib/cryptoUtil");
@@ -44,4 +44,6 @@ const sifirId_1 = require("./src/lib/sifirId");
 Object.defineProperty(exports, "sifirId", { enumerable: true, get: function () { return sifirId_1.sifirId; } });
 // typpes
 __exportStar(require("./src/lib/types/sifirId"), exports);
-__exportStar(require("./src/lib/types/pgpUtil"), exports);
+__exportStar(require("./src/lib/types/clients"), exports);
+__exportStar(require("./src/lib/types/lightning-c"), exports);
+__exportStar(require("./src/lib/types/btc"), exports);

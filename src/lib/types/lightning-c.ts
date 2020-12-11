@@ -1,6 +1,4 @@
 import { TimeStamp, BlockHeight } from "./btc";
-
-export type TimeStamp = TimeStamp;
 export type ConnectionString = string;
 export type LnAddress = string;
 export type TimeInMilliSeconds = number;
