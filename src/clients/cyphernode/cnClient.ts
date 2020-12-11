@@ -1,4 +1,4 @@
-import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
+import cypherNodeHTTPTransport from "./util/transportFactory";
 import { ClientConfig } from "../../lib/types/clients";
 import { cnClient } from "../../lib/types/cnClient";
 
