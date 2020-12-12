@@ -47,3 +47,4 @@ __exportStar(require("./src/lib/types/sifirId"), exports);
 __exportStar(require("./src/lib/types/clients"), exports);
 __exportStar(require("./src/lib/types/lightning-c"), exports);
 __exportStar(require("./src/lib/types/btc"), exports);
+__exportStar(require("./src/lib/types/pgpUtil"), exports);

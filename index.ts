@@ -34,3 +34,4 @@ export * from "./src/lib/types/sifirId";
 export * from "./src/lib/types/clients";
 export * from "./src/lib/types/lightning-c";
 export * from "./src/lib/types/btc";
+export * from "./src/lib/types/pgpUtil";
