@@ -44,8 +44,13 @@ exports.client = ({ transport = transportFactory_1.default() } = {}) => {
             const { txns } = await get("get_txns_spending", [count, skip].join("/"));
             return txns;
         },
-        async spend(address, amount) {
-            const result = await post("spend", { address, amount });
+        async spend(address, amount, confTarget = 6, replaceable = true) {
+            const result = await post("spend", {
+                address,
+                amount,
+                confTarget,
+                replaceable
+            });
             return result;
         },
         /** Txn and Address watch & unwatch */

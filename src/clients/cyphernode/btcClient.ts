@@ -69,8 +69,18 @@ export const client = ({
       const { txns } = await get("get_txns_spending", [count, skip].join("/"));
       return txns;
     },
-    async spend(address: Address, amount: number): Promise<SpendConfirmation> {
-      const result = await post("spend", { address, amount });
+    async spend(
+      address: Address,
+      amount: number,
+      confTarget = 6,
+      replaceable = true
+    ): Promise<SpendConfirmation> {
+      const result: SpendConfirmation = await post("spend", {
+        address,
+        amount,
+        confTarget,
+        replaceable
+      });
       return result;
     },
     /** Txn and Address watch & unwatch */

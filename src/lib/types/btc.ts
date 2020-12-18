@@ -223,7 +223,12 @@ export interface SifirBtcClient {
     skip?: number
   ): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
-  spend(address: Address, amount: number): Promise<SpendConfirmation>;
+  spend(
+    address: Address,
+    amount: number,
+    confTarget?: number, // default to 6
+    replaceable?: boolean // default to true
+  ): Promise<SpendConfirmation>;
   watchTxnId(
     txnId: string,
     options: TxnWatchOptions
