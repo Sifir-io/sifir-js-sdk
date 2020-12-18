@@ -2,6 +2,7 @@ type Command = string;
 export interface Transport {
   get: <T>(command: Command, payload?: any) => Promise<T>;
   post: <T>(command: Command, payload: any) => Promise<T>;
+  delete: <T>(command: Command, payload: any) => Promise<T>;
 }
 export interface HTTPTransportParam {
   gatewayUrl: string;

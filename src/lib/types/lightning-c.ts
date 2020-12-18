@@ -241,7 +241,7 @@ export interface SifirLnClientInterface {
   listPays(filters?: LnPayFilters): Promise<LnListPaysPayload[]>;
   payBolt11(
     bolt11: string,
-    expectedMsatoshi?: number,
+    expectedMsatoshi: number,
     expectedDesc?: string
   ): Promise<LnPayBolt11Payload>;
   withdrawFunds(

@@ -24,13 +24,18 @@ import {
 import {
   LndChannelResult,
   LnDCreatedInvoice,
-  LnDCreateInvoice, LnDDecodedBolt11,
+  LnDCreateInvoice,
+  LnDDecodedBolt11,
   LndGraphNodeInfo,
   LndInvoice,
   LndListPaysResult,
   LndNodeInfo,
-  LndOpenChannelRequest, LndOpenFundChannelResp,
-  LndPayInvoiceResult, LnDPeer, LndRouteDetails, LndUtxo
+  LndOpenChannelRequest,
+  LndOpenFundChannelResp,
+  LndPayInvoiceResult,
+  LnDPeer,
+  LndRouteDetails,
+  LndUtxo
 } from "../../lib/types/lnd";
 
 /**
@@ -297,7 +302,7 @@ export const client = ({
             connected: channel.active,
             state: channel.chan_status_flags,
             short_channel_id: channel.chan_id,
-            channel_sat: channel.capacity,
+            channel_sat: parseInt(channel.capacity),
             our_amount_msat: toUnit(
               channel.local_balance,
               BtcUnits.SAT,
@@ -318,7 +323,7 @@ export const client = ({
     },
     async payBolt11(
       bolt11: string,
-      expectedMsatoshi?: number,
+      expectedMsatoshi: number,
       expectedDesc?: string
     ): Promise<LnPayBolt11Payload> {
       try {

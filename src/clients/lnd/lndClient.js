@@ -230,7 +230,7 @@ exports.client = ({ transport = transportFactory_1.default() } = {}) => {
                         connected: channel.active,
                         state: channel.chan_status_flags,
                         short_channel_id: channel.chan_id,
-                        channel_sat: channel.capacity,
+                        channel_sat: parseInt(channel.capacity),
                         our_amount_msat: units_1.toUnit(channel.local_balance, units_1.BtcUnits.SAT, units_1.BtcUnits.MSAT),
                         channel_total_sat: channel.capacity,
                         funding_txid: txid,

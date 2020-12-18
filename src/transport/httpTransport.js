@@ -59,6 +59,22 @@ exports.default = (param) => {
             }
             const { body } = await request.send(payload);
             return body;
+        },
+        async delete(command, payload) {
+            const request = agent.delete(`${gatewayUrl}${command}${payload ? "/" + payload : ""}`);
+            if (proxyUrl) {
+                request.proxy(proxyUrl);
+            }
+            if (caCert) {
+                request.ca(caCert);
+            }
+            if (typeof customHeaders === "function") {
+                const headers = await customHeaders({ command, payload });
+                if (headers)
+                    request.set(headers);
+            }
+            const { body } = await request.send();
+            return body;
         }
     };
     return {
