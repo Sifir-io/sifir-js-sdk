@@ -19,6 +19,8 @@ const cnClient_1 = require("./src/clients/cyphernode/cnClient");
 const auth_1 = require("./src/clients/cyphernode/util/auth");
 const auth_2 = require("./src/clients/lnd/util/auth");
 const lndClient_1 = require("./src/clients/lnd/lndClient");
+const auth_3 = require("./src/clients/clightning-rest/util/auth");
+const lncClient_2 = require("./src/clients/clightning-rest/lncClient");
 const cyphernode = {
     btcClient: btcClient_1.client,
     lnClient: lncClient_1.client,
@@ -31,8 +33,13 @@ const lnd = {
     lndClient: lndClient_1.client,
     lndAuthHelper: auth_2.lndHelper
 };
+const clnRest = {
+    clnRestClient: lncClient_2.client,
+    clnRestHelper: auth_3.clnRestHelper
+};
 const apis = {
     lnd,
+    clnRest,
     cyphernode
 };
 exports.apis = apis;
