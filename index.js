@@ -10,7 +10,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cryptoUtils = exports.sifirId = exports.pgpUtil = exports.apis = void 0;
+exports.btcUtils = exports.cryptoUtils = exports.sifirId = exports.pgpUtil = exports.apis = void 0;
 const btcClient_1 = require("./src/clients/cyphernode/btcClient");
 const lncClient_1 = require("./src/clients/cyphernode/lncClient");
 const otsClient_1 = require("./src/clients/cyphernode/otsClient");
@@ -21,6 +21,7 @@ const auth_2 = require("./src/clients/lnd/util/auth");
 const lndClient_1 = require("./src/clients/lnd/lndClient");
 const auth_3 = require("./src/clients/clightning-rest/util/auth");
 const lncClient_2 = require("./src/clients/clightning-rest/lncClient");
+const units_1 = require("./src/lib/units");
 const cyphernode = {
     btcClient: btcClient_1.client,
     lnClient: lncClient_1.client,
@@ -43,6 +44,11 @@ const apis = {
     cyphernode
 };
 exports.apis = apis;
+const btcUtils = {
+    toUnit: units_1.toUnit,
+    BtcUnits: units_1.BtcUnits
+};
+exports.btcUtils = btcUtils;
 const cryptoUtil_1 = require("./src/lib/cryptoUtil");
 Object.defineProperty(exports, "cryptoUtils", { enumerable: true, get: function () { return cryptoUtil_1.crypto; } });
 const pgpUtil_1 = require("./src/lib/pgpUtil");

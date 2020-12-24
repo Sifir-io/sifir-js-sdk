@@ -10,7 +10,7 @@ import { client as lndClient } from "./src/clients/lnd/lndClient";
 
 import { clnRestHelper } from "./src/clients/clightning-rest/util/auth";
 import { client as clnRestClient } from "./src/clients/clightning-rest/lncClient";
-
+import { BtcUnits, toUnit } from "./src/lib/units";
 const cyphernode = {
   btcClient,
   lnClient,
@@ -32,11 +32,16 @@ const apis = {
   clnRest,
   cyphernode
 };
+
+const btcUtils = {
+  toUnit,
+  BtcUnits
+};
 import { crypto as cryptoUtils } from "./src/lib/cryptoUtil";
 import { pgpUtil } from "./src/lib/pgpUtil";
 import { sifirId } from "./src/lib/sifirId";
 
-export { apis, pgpUtil, sifirId, cryptoUtils };
+export { apis, pgpUtil, sifirId, cryptoUtils, btcUtils };
 // typpes
 export * from "./src/lib/types/sifirId";
 export * from "./src/lib/types/clients";
