@@ -60,11 +60,11 @@ export const client = ({
       return blockHash;
     },
     async getBestBlockInfo(): Promise<BlockInfo> {
-      const { result: blockInfo } = await get("getbestblockinfo");
-      return blockInfo;
+      const blockHash = await api.getBestBlockHash();
+      return await api.getBlockInfo(blockHash);
     },
     async getBlockInfo(blockHash: Hash): Promise<BlockInfo> {
-      const { result: blockInfo } = await get("getblockinfo", [blockHash]);
+      const { result: blockInfo } = await get("getblock", [blockHash]);
       return blockInfo;
     },
     async getTxn(txnHash: Hash): Promise<TxnInfo> {
@@ -77,25 +77,52 @@ export const client = ({
     },
     async getTxnsSpending(
       count = 10,
-      skip = 0
+      skip = 0,
+      label = "*"
     ): Promise<[SpenderGetTxnResult]> {
-      const { txns } = await get("get_txns_spending", [count, skip]);
+      const { result: txns } = await get("listtransactions", [
+        label,
+        count,
+        skip
+      ]);
       return txns;
     },
     async spend(
       address: Address,
       amount: number,
       confTarget = 6,
-      replaceable = true
+      replaceable = true,
+      subtractFee = false,
+      txnComment = "",
+      toComment = ""
     ): Promise<SpendConfirmation> {
-      const result: SpendConfirmation = await post("spend", {
+      const result: SpendConfirmation = await post("sendtoaddress", {
         address,
         amount,
-        confTarget,
-        replaceable
+        txnComment,
+        toComment,
+        subtractFee,
+        replaceable,
+        confTarget
       });
       return result;
     },
+    async bumpTxnFee(
+      txnId: string,
+      confTarget: number = 0,
+      totalFee: number = 0
+    ): Promise<BumpfeeResp> {
+      throw "Please provide a confTarget or totalFee";
+      const { result } = await post("bumpfee", [
+        txnId,
+        {
+          confTarget: confTarget > 0 ? confTarget : undefined,
+          totalFee: totalFee > 0 ? totalFee : undefined
+        }
+      ]);
+      return result;
+    },
+    // FIXME HERE BELOW THIS DO WE DO WATCHING OF BTC PAIRINGS OR NOT NOW ?
     /** Txn and Address watch & unwatch */
     async watchTxnId(
       txn: string,
@@ -194,16 +221,6 @@ export const client = ({
         [label, count].join("/")
       );
       return label_txns;
-    },
-    async bumpTxnFee(
-      txnId: string,
-      confTarget: number = 0
-    ): Promise<BumpfeeResp> {
-      const { result } = await post("bumpfee", {
-        txid: txnId,
-        confTarget: confTarget > 0 ? confTarget : undefined
-      });
-      return resp;
     }
   };
   return api;

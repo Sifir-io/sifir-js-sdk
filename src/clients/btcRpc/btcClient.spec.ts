@@ -108,7 +108,7 @@ test("Should be able to get a transactions info", async t => {
   t.true(txnInfo.blocktime > 1);
 });
 
-test.skip("Should be able to get the spending wallets balance", async t => {
+test("Should be able to get the spending wallets balance", async t => {
   const {
     context: { getBalance }
   } = t;
@@ -132,7 +132,7 @@ test.skip("Should be able to spend (will only run when testnet)", async t => {
   const { status, hash } = await spend(sendToAddress, 0.0001);
   t.is(status, "accepted");
 });
-test.skip("Should be able to get a spending wallets txns", async t => {
+test("Should be able to get a spending wallets txns", async t => {
   const {
     context: { getTxnsSpending }
   } = t;

@@ -33,11 +33,11 @@ exports.client = ({ transport = transportFactory_1.default() } = {}) => {
             return blockHash;
         },
         async getBestBlockInfo() {
-            const { result: blockInfo } = await get("getbestblockinfo");
-            return blockInfo;
+            const blockHash = await api.getBestBlockHash();
+            return await api.getBlockInfo(blockHash);
         },
         async getBlockInfo(blockHash) {
-            const { result: blockInfo } = await get("getblockinfo", [blockHash]);
+            const { result: blockInfo } = await get("getblock", [blockHash]);
             return blockInfo;
         },
         async getTxn(txnHash) {
@@ -48,19 +48,38 @@ exports.client = ({ transport = transportFactory_1.default() } = {}) => {
             const { result: balance } = await get("getbalance");
             return balance;
         },
-        async getTxnsSpending(count = 10, skip = 0) {
-            const { txns } = await get("get_txns_spending", [count, skip]);
+        async getTxnsSpending(count = 10, skip = 0, label = "*") {
+            const { result: txns } = await get("listtransactions", [
+                label,
+                count,
+                skip
+            ]);
             return txns;
         },
-        async spend(address, amount, confTarget = 6, replaceable = true) {
-            const result = await post("spend", {
+        async spend(address, amount, confTarget = 6, replaceable = true, subtractFee = false, txnComment = "", toComment = "") {
+            const result = await post("sendtoaddress", {
                 address,
                 amount,
-                confTarget,
-                replaceable
+                txnComment,
+                toComment,
+                subtractFee,
+                replaceable,
+                confTarget
             });
             return result;
         },
+        async bumpTxnFee(txnId, confTarget = 0, totalFee = 0) {
+            throw "Please provide a confTarget or totalFee";
+            const { result } = await post("bumpfee", [
+                txnId,
+                {
+                    confTarget: confTarget > 0 ? confTarget : undefined,
+                    totalFee: totalFee > 0 ? totalFee : undefined
+                }
+            ]);
+            return result;
+        },
+        // FIXME HERE BELOW THIS DO WE DO WATCHING OF BTC PAIRINGS OR NOT NOW ?
         /** Txn and Address watch & unwatch */
         async watchTxnId(txn, options) {
             let param = {
@@ -135,13 +154,6 @@ exports.client = ({ transport = transportFactory_1.default() } = {}) => {
         async getTransactionsByPub32Label(label, count = 10) {
             const { label_txns } = await get("get_txns_by_watchlabel", [label, count].join("/"));
             return label_txns;
-        },
-        async bumpTxnFee(txnId, confTarget = 0) {
-            const { result } = await post("bumpfee", {
-                txid: txnId,
-                confTarget: confTarget > 0 ? confTarget : undefined
-            });
-            return resp;
         }
     };
     return api;

@@ -220,14 +220,18 @@ export interface SifirBtcClient {
   getTxn(txnHash: Hash): Promise<TxnInfo>;
   getTxnsSpending(
     count?: number,
-    skip?: number
+    skip?: number,
+    label?: string // defaults to *
   ): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
   spend(
     address: Address,
     amount: number,
     confTarget?: number, // default to 6
-    replaceable?: boolean // default to true
+    replaceable?: boolean, // default to true
+    subtractFee?: boolean, // default to false
+    txnComment?: string,
+    toComment?: string
   ): Promise<SpendConfirmation>;
   watchTxnId(
     txnId: string,
@@ -256,5 +260,5 @@ export interface SifirBtcClient {
     label: string,
     count?: number
   ): Promise<[WatchPub32Txn]>;
-  bumpTxnFee(txnId: string, confTarget: number): Promise<BumpfeeResp>;
+  bumpTxnFee(txnId: string, confTarget?: number,feeTarget?:number): Promise<BumpfeeResp>;
 }
