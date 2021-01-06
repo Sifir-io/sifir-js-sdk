@@ -49,6 +49,9 @@ exports.default = (param) => {
         },
         async post(command, payload) {
             const request = agent.post(`${gatewayUrl}${command}`);
+            if (proxyUrl) {
+                request.proxy(proxyUrl);
+            }
             if (caCert) {
                 request.ca(caCert);
             }

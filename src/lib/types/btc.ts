@@ -211,7 +211,7 @@ export interface SpenderGetTxnResult {
 }
 export interface SifirBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
-  getNewAddress(addressType: AddressType): Promise<Address>;
+  getNewAddress(addressType: AddressType, label?: String): Promise<Address>;
   getNewAddress(): Promise<Address>;
   getBlockHash(height: number): Promise<Hash>;
   getBestBlockHash(): Promise<Hash>;

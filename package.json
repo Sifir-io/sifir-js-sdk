@@ -32,6 +32,7 @@
     "test:cn": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/cyphernode/*.spec.js",
     "test:lnd": "LND_CA_CERT=$(cat test-lnd.pem) NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/lnd/lndClient.spec.js",
     "test:clnrest": "CLNREST_CA_CERT=$(cat test-clnrest.pem) NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/clightning-rest/lncClient.spec.js",
+    "test:btc:rpc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/btcRpc/btcClient.spec.js",
     "test:util:pgp": "node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/pgpUtil.spec.js",
     "cli": "CYPHERNODE_GATEKEEPER_CERT_CA=$(cat test.pem) node -r dotenv/config cli.js"
   },

@@ -28,6 +28,9 @@ export default (param: HTTPTransportParam): Transport => {
     },
     async post(command: string, payload: any): Promise<any> {
       const request = agent.post(`${gatewayUrl}${command}`);
+      if (proxyUrl) {
+        request.proxy(proxyUrl);
+      }
       if (caCert) {
         request.ca(caCert);
       }
