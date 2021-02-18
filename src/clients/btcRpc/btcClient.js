@@ -80,6 +80,7 @@ exports.client = ({ transport = transportFactory_1.default() } = {}) => {
             return result;
         },
         // FIXME HERE BELOW THIS DO WE DO WATCHING OF BTC PAIRINGS OR NOT NOW ?
+        // FIXME EXPORT THE CLIENT
         /** Txn and Address watch & unwatch */
         async watchTxnId(txn, options) {
             let param = {

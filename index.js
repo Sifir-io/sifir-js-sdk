@@ -21,6 +21,8 @@ const auth_2 = require("./src/clients/lnd/util/auth");
 const lndClient_1 = require("./src/clients/lnd/lndClient");
 const auth_3 = require("./src/clients/clightning-rest/util/auth");
 const lncClient_2 = require("./src/clients/clightning-rest/lncClient");
+const btcClient_2 = require("./src/clients/btcRpc/btcClient");
+const auth_4 = require("./src/clients/btcRpc/util/auth");
 const units_1 = require("./src/lib/units");
 const cyphernode = {
     btcClient: btcClient_1.client,
@@ -38,10 +40,15 @@ const clnRest = {
     clnRestClient: lncClient_2.client,
     clnRestHelper: auth_3.clnRestHelper
 };
+const btcRpc = {
+    btcRpcClient: btcClient_2.client,
+    btcAuthHelper: auth_4.btcAuthHelper
+};
 const apis = {
     lnd,
     clnRest,
-    cyphernode
+    cyphernode,
+    btcRpc,
 };
 exports.apis = apis;
 const btcUtils = {
@@ -55,7 +62,7 @@ const pgpUtil_1 = require("./src/lib/pgpUtil");
 Object.defineProperty(exports, "pgpUtil", { enumerable: true, get: function () { return pgpUtil_1.pgpUtil; } });
 const sifirId_1 = require("./src/lib/sifirId");
 Object.defineProperty(exports, "sifirId", { enumerable: true, get: function () { return sifirId_1.sifirId; } });
-// typpes
+// types
 __exportStar(require("./src/lib/types/sifirId"), exports);
 __exportStar(require("./src/lib/types/clients"), exports);
 __exportStar(require("./src/lib/types/lightning-c"), exports);
